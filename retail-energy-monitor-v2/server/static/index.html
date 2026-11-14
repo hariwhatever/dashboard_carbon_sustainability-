@@ -1,0 +1,174 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Retail Energy &amp; Carbon Monitor</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f2f7ee;--mut:#b9cdbf;--glass:rgba(255,255,255,.09);--edge:rgba(255,255,255,.2);--amber:#f6c453;--mint:#5eead4;--sky:#7dd3fc;--bad:#ff8a80;--disp:'Bricolage Grotesque',system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:15px/1.5 'DM Sans',system-ui,sans-serif;background:#07140f;min-height:100vh;padding:env(safe-area-inset-top) 16px 40px}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1}
+.wrap{max-width:1320px;margin:0 auto}
+header{display:flex;align-items:center;gap:14px;padding:22px 0 14px;flex-wrap:wrap}
+h1{font:800 clamp(20px,3.2vw,30px)/1.1 var(--disp);margin:0;flex:1;letter-spacing:-.02em}
+h1 small{display:block;font:400 13px 'DM Sans',system-ui,sans-serif;color:var(--mut);letter-spacing:0;margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;font-size:13px;font-weight:700;background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(14px)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 var(--mint);animation:pulse 1.8s infinite}.off .dot{background:var(--bad);animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 10px #5eead400}100%{box-shadow:0 0 0 0 #5eead400}}
+a{color:var(--ink);font-weight:700;text-decoration:none}a.pill:hover{background:rgba(255,255,255,.18)}
+.glass{background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border:1px solid var(--edge);border-radius:22px;padding:20px;backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 18px 50px rgba(0,0,0,.28)}
+.l{color:var(--mut);font-size:13px;font-weight:500}.s{color:var(--mut);font-size:12.5px}
+h2{font:600 16px var(--disp);margin:0 0 12px}
+.num{font-family:var(--disp);font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.layout{display:grid;gap:16px;grid-template-columns:1fr;margin-bottom:16px}
+@media(min-width:1000px){.layout{grid-template-columns:290px 1fr 290px}}
+.stack{display:grid;gap:16px;align-content:start}
+.hero{display:flex;flex-direction:column;gap:6px;min-height:440px;position:relative;overflow:hidden}
+.hero .big{font-size:clamp(64px,13vw,128px);line-height:.95}.hero .unit{font:600 24px var(--disp);color:var(--mut);margin-left:8px}
+.flow{width:100%;height:auto;margin-top:auto}
+.flow .base{stroke:rgba(255,255,255,.14);fill:none;stroke-width:2}.flow .run{fill:none;stroke-linecap:round;stroke-dasharray:2 14;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-16}}
+.flow text{fill:var(--ink);font:600 12px 'DM Sans',system-ui,sans-serif}.flow .w{fill:var(--mut);font-weight:400}
+.mrow{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.1)}.mrow:last-child{border:0}
+.mrow .num{font-size:26px}.mrow i{font:500 13px 'DM Sans',system-ui,sans-serif;color:var(--mut);margin-left:4px;font-style:normal}
+.bars{display:grid;gap:12px}.bar b{display:flex;justify-content:space-between;font-weight:500;font-size:13px;margin-bottom:5px}
+.track{height:8px;border-radius:9px;background:rgba(255,255,255,.12);overflow:hidden}.track span{display:block;height:100%;border-radius:9px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.eq{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.eq div{background:rgba(255,255,255,.07);border-radius:14px;padding:12px}.eq .num{font-size:24px;display:block}
+.ring{position:relative;width:150px;height:150px;margin:0 auto}.ring svg{transform:rotate(-90deg)}.ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring circle{fill:none;stroke-width:12;stroke-linecap:round}.ring .t{stroke:rgba(255,255,255,.12)}.ring .p{stroke:var(--mint);transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 8px #5eead4aa)}
+.three{display:grid;gap:16px;grid-template-columns:1fr;margin-bottom:16px}@media(min-width:900px){.three{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:1fr 1fr!important}}
+.two{display:grid;gap:16px;grid-template-columns:1fr;margin-bottom:16px}
+.ch{position:relative;height:240px}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}.cmp .num{font-size:30px}
+input,button{font:inherit;border-radius:12px;padding:9px 12px;border:1px solid var(--edge);background:rgba(255,255,255,.1);color:var(--ink);min-width:0}
+input::placeholder{color:#b9cdbf99}button{cursor:pointer;font-weight:700;background:var(--mint);color:#06281f;border:0}button.g{background:rgba(255,255,255,.12);color:var(--ink);border:1px solid var(--edge)}
+label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--mut);font-weight:500}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+.iv{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+.tick{animation:flash .9s}@keyframes flash{30%{text-shadow:0 0 24px #5eead4}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(max-width:999px){.hero{order:-1;min-height:380px}.flow text{font-size:19px}}
+</style></head><body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="wrap">
+<header><h1>Retail Energy &amp; Carbon Monitor<small id="clock"></small></h1>
+<span id="st" class="pill off"><span class="dot"></span><span id="sttx">connecting…</span></span><a class="pill" href="/api/daily.csv">Export CSV</a></header>
+
+<div class="layout">
+ <div class="stack" id="left">
+  <div class="glass"><h2>Electrical</h2><div id="elec"></div></div>
+  <div class="glass"><h2>Where the power goes</h2><div class="bars" id="bars"></div></div>
+ </div>
+ <div class="glass hero">
+  <div class="l">Live load across the store</div>
+  <div><span class="num big" id="pw">0</span><span class="unit">W</span></div>
+  <div class="s" id="pwsub">Waiting for the first reading</div>
+  <svg class="flow" id="flow" viewBox="0 0 640 230" role="img" aria-label="Power flow from grid to circuits"></svg>
+ </div>
+ <div class="stack" id="right">
+  <div class="glass"><h2>Today</h2>
+   <div class="mrow"><span class="l">Energy</span><span><span class="num" id="tk">–</span><i>kWh</i></span></div>
+   <div class="mrow"><span class="l">Carbon</span><span><span class="num" id="tc">–</span><i>kg CO₂e</i></span></div>
+   <div class="mrow"><span class="l">Cost</span><span><span class="num" id="tm">–</span></span></div>
+   <div class="eq"><div><span class="num" id="trees">–</span><span class="s">trees needed for a year to absorb this</span></div><div><span class="num" id="km">–</span><span class="s">km of car travel equivalent</span></div></div>
+  </div>
+  <div class="glass"><h2>Reduction vs baseline</h2>
+   <div class="ring"><svg width="150" height="150" viewBox="0 0 150 150"><circle class="t" cx="75" cy="75" r="64"/><circle class="p" id="rp" cx="75" cy="75" r="64" stroke-dasharray="402" stroke-dashoffset="402"/></svg><div class="c"><span class="num" style="font-size:34px" id="rpv">–</span><span class="s">saved</span></div></div>
+   <div class="s" style="text-align:center;margin-top:10px" id="rsub">Log a measure to start the comparison</div>
+  </div>
+ </div>
+</div>
+
+<div class="glass" style="margin-bottom:16px"><h2>Baseline vs current</h2><div id="cmp" class="s">Log an energy-saving measure below. Once you have complete days before and after it, the comparison appears here.</div></div>
+
+<div class="three">
+ <div class="glass"><h2>Live power by circuit (2 h, W)</h2><div class="ch"><canvas id="c1"></canvas></div></div>
+ <div class="glass"><h2>Daily energy by circuit (kWh)</h2><div class="ch"><canvas id="c2"></canvas></div></div>
+ <div class="glass"><h2>Average load by hour (7 days, W)</h2><div class="ch"><canvas id="c3"></canvas></div></div>
+</div>
+
+<div class="two">
+ <div class="glass"><h2>Energy-saving measures</h2><div id="ivs"></div>
+  <div class="row" style="margin-top:14px"><label>Measure<input id="in" placeholder="e.g. Switched to LED lighting"></label><label>Note<input id="nt" placeholder="optional"></label><button id="add">Log measure now</button></div></div>
+ <div class="glass"><h2>Settings</h2><div class="row"><label>Tariff (₹/kWh)<input id="tf" type="number" step="0.01" style="width:110px"></label><label>Grid factor (kgCO₂e/kWh)<input id="fc" type="number" step="0.001" style="width:150px"></label><button class="g" id="sv">Save</button></div>
+  <p class="s">Default factor is illustrative. Replace it with the latest CEA grid factor. Results are indicative, not certified measurement.</p></div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s),f=(n,d=1)=>(+n).toLocaleString('en-IN',{maximumFractionDigits:d,minimumFractionDigits:0}),
+esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),
+COL=['','#f6c453','#5eead4','#7dd3fc','#f9a8d4','#c4b5fd'],RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const reduced=RM;
+function tween(el,to,dec=0,pre='',suf=''){if(el==null)return;const from=+el.dataset.v||0;el.dataset.v=to;if(reduced||from===to){el.textContent=pre+f(to,dec)+suf;return}
+ const t0=performance.now(),D=900;(function st(t){const k=Math.min(1,(t-t0)/D),e=1-Math.pow(1-k,3);el.textContent=pre+f(from+(to-from)*e,dec)+suf;if(k<1)requestAnimationFrame(st)})(t0)}
+/* ---------- animated nature background ---------- */
+(function(){const cv=$('#bg'),x=cv.getContext('2d');let W,H,DPR=Math.min(devicePixelRatio||1,1.5),P=[];
+const K=[[0,'#050d1f','#0b2a2a'],[5,'#1b2150','#b4585c'],[7,'#3a7bb8','#f4c98b'],[12,'#2f8fd0','#a8e0e8'],[17,'#3b6cb0','#f2b277'],[19,'#2b2358','#c8566a'],[21,'#0a1230','#12403a'],[24,'#050d1f','#0b2a2a']];
+const hx=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)),mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+function sky(h){let i=0;while(K[i+1][0]<h)i++;const k=(h-K[i][0])/(K[i+1][0]-K[i][0]);return[mix(hx(K[i][1]),hx(K[i+1][1]),k),mix(hx(K[i][2]),hx(K[i+1][2]),k)]}
+function size(){W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;P=Array.from({length:innerWidth<700?34:80},()=>({x:Math.random()*W,y:H*(.45+Math.random()*.55),r:(1+Math.random()*2.2)*DPR,s:Math.random()*6.28,v:.15+Math.random()*.4}))}
+addEventListener('resize',size);size();
+const R=[[.62,.05,.0035,.9,'#0d3a33'],[.72,.06,.006,.8,'#0a2f2a'],[.82,.07,.01,.72,'#07241f'],[.92,.05,.016,.6,'#041812']];
+function draw(ts){const t=ts/1000,d=new Date(),h=d.getHours()+d.getMinutes()/60,[a,b]=sky(h);
+ const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,`rgb(${a})`);g.addColorStop(.7,`rgb(${b})`);x.fillStyle=g;x.fillRect(0,0,W,H);
+ const day=h>6&&h<18,u=day?(h-6)/12:((h+6)%12)/12,sx=W*(.12+.76*u),sy=H*(.55-Math.sin(u*Math.PI)*.42),rr=Math.min(W,H)*(day?.09:.05);
+ const gl=x.createRadialGradient(sx,sy,0,sx,sy,rr*4);gl.addColorStop(0,day?'rgba(255,230,160,.9)':'rgba(220,235,255,.55)');gl.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=gl;x.fillRect(0,0,W,H);
+ x.fillStyle=day?'#fff3c4':'#eef4ff';x.beginPath();x.arc(sx,sy,rr*.45,0,6.28);x.fill();
+ if(!day){x.fillStyle='rgba(255,255,255,.8)';for(let i=0;i<50;i++){const px=(i*997%1000)/1000*W,py=(i*541%600)/1000*H;x.globalAlpha=.3+.5*Math.abs(Math.sin(t*.8+i));x.fillRect(px,py,1.6*DPR,1.6*DPR)}x.globalAlpha=1}
+ R.forEach(([y0,am,sp,al,col],n)=>{x.beginPath();x.moveTo(0,H);for(let px=0;px<=W;px+=14*DPR){const q=px/DPR,yy=H*y0+H*am*(Math.sin(q*.0042+n*2+t*sp*6)+.55*Math.sin(q*.011+n*5-t*sp*9)+.25*Math.sin(q*.027+n));x.lineTo(px,yy)}x.lineTo(W,H);x.closePath();x.fillStyle=col;x.globalAlpha=al;x.fill();x.globalAlpha=1;
+  const m=x.createLinearGradient(0,H*(y0-.08),0,H*(y0+.1));m.addColorStop(0,'rgba(255,255,255,0)');m.addColorStop(.5,`rgba(220,240,235,${.07+.03*Math.sin(t*.3+n)})`);m.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=m;x.fillRect(0,H*(y0-.08),W,H*.2)});
+ x.globalCompositeOperation='lighter';P.forEach(p=>{p.s+=.012;p.x+=Math.sin(p.s)*.5*DPR+p.v*DPR*.4;p.y+=Math.cos(p.s*.8)*.4*DPR-.12*DPR;if(p.x>W+20)p.x=-20;if(p.y<H*.4)p.y=H;
+  const gg=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6),al=.35+.5*Math.sin(p.s*2.3);gg.addColorStop(0,`rgba(190,255,170,${Math.max(al,0)})`);gg.addColorStop(1,'rgba(190,255,170,0)');x.fillStyle=gg;x.fillRect(p.x-p.r*6,p.y-p.r*6,p.r*12,p.r*12)});x.globalCompositeOperation='source-over';
+ /* dark veil so glass text stays readable */x.fillStyle='rgba(3,15,10,.32)';x.fillRect(0,0,W,H);
+ if(!RM)requestAnimationFrame(draw)}
+requestAnimationFrame(draw)})();
+setInterval(()=>$('#clock').textContent=new Date().toLocaleString('en-IN',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit',second:'2-digit'}),1000);
+/* ---------- charts ---------- */
+const HAS=typeof Chart!=='undefined';if(HAS){Chart.defaults.color='#d3e3d9';Chart.defaults.borderColor='rgba(255,255,255,.1)';Chart.defaults.font.family="'DM Sans',system-ui,sans-serif"}
+let C={},first=true,flowKey='',S=null,tPoll=0;
+const mk=(id,cfg)=>{if(!HAS)return;if(C[id]){C[id].data=cfg.data;C[id].update('none')}else{cfg.options={responsive:true,maintainAspectRatio:false,animation:{duration:900},plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true}}},...cfg.options};C[id]=new Chart($('#'+id),cfg)}};
+/* ---------- power-flow diagram ---------- */
+function flow(d){const ks=Object.keys(d.names),key=ks.join(),n=ks.length,tw=d.live.reduce((a,r)=>a+r.p,0)||1,Y=i=>n==1?115:40+i*(150/(n-1));
+ let h=`<path class="base" id="fg" d="M70 115H290"/>`,run='';
+ const speed=w=>Math.max(.35,Math.min(3.5,2.6-Math.log10(Math.max(w,1))*.55));
+ h+=ks.map((k,i)=>`<path class="base" d="M290 115C390 115 400 ${Y(i)} 500 ${Y(i)}"/>`).join('');
+ h+=`<path class="run" id="r0" d="M70 115H290" stroke="#fff"/>`+ks.map((k,i)=>`<path class="run" id="r${k}" d="M290 115C390 115 400 ${Y(i)} 500 ${Y(i)}" stroke="${COL[k]||'#fff'}"/>`).join('');
+ h+=`<g><circle cx="52" cy="115" r="18" fill="rgba(255,255,255,.14)" stroke="#fff3"/><path d="M48 106l-6 12h8l-3 10 12-15h-8l4-7z" fill="#f6c453"/><text x="26" y="150">Grid</text></g><g><rect x="272" y="97" width="36" height="36" rx="10" fill="rgba(255,255,255,.14)" stroke="#fff3"/><text x="262" y="152">Store mains</text></g>`;
+ h+=ks.map((k,i)=>`<g><circle cx="515" cy="${Y(i)}" r="9" fill="${COL[k]||'#fff'}"/><text x="532" y="${Y(i)-2}">${esc(d.names[k])}</text><text class="w" id="fw${k}" x="532" y="${Y(i)+14}">0 W</text></g>`).join('');
+ if(flowKey!==key){$('#flow').innerHTML=h;flowKey=key}
+ $('#r0').style.animationDuration=speed(tw)+'s';$('#r0').style.strokeWidth=Math.min(6,2+tw/1500);
+ ks.forEach(k=>{const r=d.live.find(r=>r.ch==k)||{p:0},e=$('#r'+k);if(e){e.style.animationDuration=speed(r.p)+'s';e.style.strokeWidth=Math.min(6,2+r.p/900)}const w=$('#fw'+k);if(w)w.textContent=f(r.p,0)+' W'})}
+/* ---------- main load ---------- */
+async function load(){let d;try{d=await (await fetch('/api/summary')).json()}catch(e){$('#sttx').textContent='server unreachable';$('#st').className='pill off';return}
+ S=d;tPoll=Date.now();const n=d.names,tw=d.live.reduce((a,r)=>a+r.p,0),td=d.today,c=d.compare,L=d.live;
+ $('#sttx').textContent=d.online?'Meter online · '+new Date(d.last_seen*1000).toLocaleTimeString():(d.last_seen?'Meter offline · last '+new Date(d.last_seen*1000).toLocaleString():'No data yet');$('#st').className='pill'+(d.online?'':' off');
+ tween($('#pw'),tw,0);$('#pwsub').textContent=L.length?`${L.length} circuit${L.length>1?'s':''} reporting · updated ${new Date(d.last_seen*1000).toLocaleTimeString()}`:'Waiting for the first reading';
+ /* electrical parameters */
+ const V=L.length?L.reduce((a,r)=>a+r.v,0)/L.length:0,I=L.reduce((a,r)=>a+r.i,0),PF=tw?L.reduce((a,r)=>a+r.pf*r.p,0)/tw:0,F=L.length?L.reduce((a,r)=>a+r.f,0)/L.length:0;
+ const row=(id,l,u)=>`<div class="mrow"><span class="l">${l}</span><span><span class="num" id="${id}">–</span><i>${u}</i></span></div>`;
+ if(!$('#ev')){$('#elec').innerHTML=row('ev','Voltage','V')+row('ei','Current','A')+row('epf','Power factor','')+row('ef','Frequency','Hz')}
+ tween($('#ev'),V,1);tween($('#ei'),I,2);tween($('#epf'),PF,2);tween($('#ef'),F,2);
+ /* share bars */
+ const mx=Math.max(tw,1);$('#bars').innerHTML=Object.keys(n).map(k=>{const p=(L.find(r=>r.ch==k)||{p:0}).p,w=p/mx*100;return `<div class="bar"><b><span>${esc(n[k])}</span><span>${f(p,0)} W · ${f(w,0)}%</span></b><div class="track"><span style="width:${w}%;background:${COL[k]||'#fff'}"></span></div></div>`}).join('');
+ flow(d);
+ /* today */
+ if(td){tween($('#tk'),td.kwh,2);tween($('#tc'),td.co2,2);tween($('#tm'),td.cost,0,'₹');tween($('#trees'),td.co2/21*365,0);tween($('#km'),td.co2/.12,0)}
+ /* reduction ring */
+ if(c){const p=Math.max(0,Math.min(100,c.pct));$('#rp').style.strokeDashoffset=402*(1-p/100);tween($('#rpv'),c.pct,1,'','%');$('#rsub').textContent=`Saving ₹${f(c.month_cost,0)} and ${f(c.month_co2)} kgCO₂e a month (projected)`}
+ if(c)$('#cmp').innerHTML=`<div class="cmp"><div><div class="l">Baseline (${c.base_days} days)</div><div class="num">${f(c.base_kwh)} <span class="s">kWh/day</span></div></div><div><div class="l">Current (${c.cur_days} days)</div><div class="num">${f(c.cur_kwh)} <span class="s">kWh/day</span></div></div><div><div class="l">Reduction</div><div class="num" style="color:var(--mint)">${f(c.pct)}%</div></div><div><div class="l">Saved per day</div><div class="num">${f(c.saved_kwh,2)} <span class="s">kWh</span></div><div class="s">${f(c.saved_co2,2)} kgCO₂e · ₹${f(c.saved_cost,0)}</div></div></div><div class="s" style="margin-top:12px">By circuit (kWh/day, before → after): ${Object.keys(n).map(k=>esc(n[k])+' '+f(c.ch[k].base,2)+' → '+f(c.ch[k].cur,2)).join(' · ')}</div>`;
+ /* charts */
+ const ts=[...new Set(d.series.map(r=>r.ts))];
+ mk('c1',{type:'line',data:{labels:ts.map(t=>new Date(t*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})),datasets:Object.keys(n).map(k=>({label:n[k],borderColor:COL[k],backgroundColor:COL[k]+'33',fill:true,pointRadius:0,borderWidth:2,tension:.35,data:ts.map(t=>(d.series.find(r=>r.ts==t&&r.ch==k)||{}).p??null)}))},options:{scales:{x:{ticks:{maxTicksLimit:6}}}}});
+ mk('c2',{type:'bar',data:{labels:d.daily.map(x=>x.day.slice(5)),datasets:Object.keys(n).map(k=>({label:n[k],backgroundColor:COL[k],borderRadius:4,data:d.daily.map(x=>x.ch[k]||0)}))},options:{scales:{x:{stacked:true},y:{stacked:true}}}});
+ mk('c3',{type:'bar',data:{labels:d.hourly.map(h=>h.h+':00'),datasets:[{label:'Avg load (W)',backgroundColor:'#5eead4cc',borderRadius:5,data:d.hourly.map(h=>h.w)}]},options:{plugins:{legend:{display:false}}}});
+ $('#ivs').innerHTML=d.interventions.map(i=>`<div class="iv"><span><b>${esc(i.name)}</b><br><span class="s">${new Date(i.ts*1000).toLocaleString()} ${esc(i.note||'')}</span></span><button class="g" onclick="del(${+i.id})">Remove</button></div>`).join('')||'<div class="s">No measures logged yet.</div>';
+ if(first){$('#tf').value=d.cfg.tariff;$('#fc').value=d.cfg.factor;first=false}}
+/* live counters: tick energy/carbon/cost forward between server polls */
+setInterval(()=>{if(!S||!S.today||!S.online)return;const tw=S.live.reduce((a,r)=>a+r.p,0),dk=tw/1000*(Date.now()-tPoll)/3.6e6,k=S.today.kwh+dk;
+ const set=(id,v,dec,pre='')=>{const e=$(id);e.dataset.v=v;e.textContent=pre+f(v,dec)};set('#tk',k,3);set('#tc',k*S.cfg.factor,3);set('#tm',k*S.cfg.tariff,2,'₹')},1000);
+const post=(u,b)=>fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+$('#add').onclick=async()=>{if(!$('#in').value.trim())return;await post('/api/intervention',{name:$('#in').value,note:$('#nt').value});$('#in').value=$('#nt').value='';load()};
+$('#sv').onclick=async()=>{await post('/api/settings',{tariff:+$('#tf').value,factor:+$('#fc').value});load()};
+window.del=async id=>{await fetch('/api/intervention/'+id,{method:'DELETE'});load()};
+load();setInterval(load,5000);
+</script></body></html>
