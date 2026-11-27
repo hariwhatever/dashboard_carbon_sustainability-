@@ -1,9 +1,12 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><title>Retail Energy &amp; Carbon Monitor</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&amp;family=Montserrat:wght@500;600;700&amp;family=Shanti&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
 <style>
-:root{--ink:#f2f7ee;--mut:#b9cdbf;--edge:rgba(255,255,255,.2);--ac:#5eead4;--amber:#f6c453;--sky:#7dd3fc;--bad:#ff8a80;--disp:'Segoe UI',Arial,sans-serif;--body:'Segoe UI',Arial,sans-serif}
+:root{--ink:#f2f7ee;--mut:#b9cdbf;--edge:rgba(255,255,255,.2);--ac:#5eead4;--amber:#f6c453;--sky:#7dd3fc;--bad:#ff8a80;--disp:'Montserrat',Arial,sans-serif;--body:'Shanti',Arial,sans-serif;--metric:'Kanit',Arial,sans-serif}
 *{box-sizing:border-box}html,body{height:100%;margin:0}
-body{color:var(--ink);font:15px/1.5 var(--body);background:radial-gradient(ellipse at 12% 8%,#34453f 0%,transparent 53%),radial-gradient(ellipse at 95% 95%,#293b40 0%,transparent 48%),#172322;overflow:hidden}
+body{color:var(--ink);font:15px/1.5 var(--body);background:radial-gradient(ellipse at 50% -15%,#45533a 0%,transparent 53%),radial-gradient(ellipse at 0% 100%,#596137 0%,transparent 55%),radial-gradient(ellipse at 100% 100%,#536842 0%,transparent 57%),radial-gradient(ellipse at 50% 85%,#263f30 0%,transparent 60%),#18271f;overflow:hidden}
 
 .app{display:grid;grid-template-columns:248px minmax(0,1fr);height:100dvh}
 .side{display:flex;flex-direction:column;gap:6px;padding:18px 14px;margin:14px 0 14px 14px;border-radius:24px;min-height:0}
@@ -49,35 +52,73 @@ label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--mu
  .stage{padding-bottom:100px}.hero{min-height:360px}.flow text{font-size:17px}.top{padding-top:calc(14px + env(safe-area-inset-top))}}
 @media(max-width:480px){nav{overflow-x:auto}nav a{min-width:49px;flex-shrink:0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* Typography, alignment and responsive metric spacing */
+.num{font-family:var(--metric);font-weight:500;letter-spacing:0;line-height:1.15;font-variant-numeric:tabular-nums lining-nums}
+.brand,h1,h2{letter-spacing:-.015em}h1,.brand{font-weight:700}h2{font-weight:600}
+.l,.s,nav a{font-weight:400}.pill,button{font-weight:400}
+:root{--mut:#d1deca;--edge:rgba(235,244,221,.23)}
+.material-symbols-outlined{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:22px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;flex:none}
+.hero{container-type:inline-size}.power-reading{display:flex;align-items:baseline;gap:12px;margin:14px 0 12px;min-width:0;flex-wrap:wrap}.hero .big{font-size:clamp(42px,15cqi,112px);line-height:1.18;max-width:100%;overflow-wrap:anywhere}.power-reading .unit{margin-left:0;flex:none}#pwsub{line-height:1.5}
+.gauge-dial{display:grid;place-items:center;width:120px;height:120px;margin:0 auto 12px;position:relative}.gauge-dial svg,.gauge-dial .num{grid-area:1/1}.gauge-dial svg{display:block}.gauge-dial .num{margin:0;padding:0;height:auto;font-size:21px;line-height:1.1;z-index:1;max-width:90px;overflow-wrap:anywhere}.g .l{margin-top:4px}.g .s{margin-top:2px}
+@media(max-width:859px){nav{overflow-x:auto;justify-content:flex-start}nav a{min-width:58px}.material-symbols-outlined{font-size:21px}}
+
+/* Responsive navigation and content-driven bento layout */
+.app{--rail:248px;grid-template-columns:var(--rail) minmax(0,1fr);transition:grid-template-columns 320ms cubic-bezier(.2,.75,.25,1)}
+.app.collapsed{--rail:88px}
+.side{padding:12px;overflow:hidden;min-width:0;gap:10px}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:58px}
+.side-head .brand{padding:0 0 0 5px;font-size:16px;white-space:nowrap;overflow:hidden;min-width:0;flex:1}
+#side-toggle{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;padding:0;border:1px solid var(--edge);background:rgba(255,255,255,.07);color:var(--ink)}
+#side-toggle:hover{background:rgba(255,255,255,.16)}
+nav a{min-width:0;white-space:nowrap;overflow:hidden;gap:12px;min-height:44px}
+.nav-label,.present-label{white-space:nowrap;overflow:hidden;transition:opacity 140ms ease}
+.collapsed .brand,.collapsed .nav-label,.collapsed .present-label{opacity:0;width:0;flex:0;padding:0;pointer-events:none}
+.collapsed .side-head{justify-content:center}.collapsed nav a{justify-content:center;padding:11px 0;gap:0}.collapsed #present{justify-content:center;padding:9px 0;gap:0}
+#present{min-height:42px;overflow:hidden;white-space:nowrap}.side .sp{min-height:4px}
+.stage{container-type:inline-size}.view{gap:16px}.view>.glass,.kp>.glass{min-width:0}
+/* Breakpoints follow the available content width, not the browser width. */
+@media(min-width:860px){.view>.c8,.view>.c6,.view>.c4{grid-column:span 12}.view>.c3{grid-column:span 6}}
+@container (min-width:640px){.view>.c6,.view>.c4{grid-column:span 6}.view>.c3{grid-column:span 3}}
+@container (min-width:940px){.view>.c8{grid-column:span 8}.view>.c4{grid-column:span 4}}
+#v-overview .hero{min-height:360px}.kp{align-content:stretch;grid-auto-rows:minmax(130px,1fr);min-width:0}.kp>.glass{display:flex;flex-direction:column;justify-content:center;container-type:inline-size}.kp .num{font-size:clamp(27px,18cqi,44px);overflow-wrap:anywhere}.kp .s{margin-top:4px}
+@container (min-width:1140px){#v-overview .hero{grid-column:span 7;min-height:420px}#v-overview .kp{grid-column:span 5}}
+.overview-detail{display:none}.overview-detail .st4{grid-template-columns:repeat(3,minmax(0,1fr))}.overview-detail .num{overflow-wrap:anywhere}
+.collapsed #v-overview .overview-detail{display:block;animation:detail-in 240ms ease both}
+@keyframes detail-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.chart-tile{display:flex;flex-direction:column;gap:12px;background:linear-gradient(155deg,rgba(255,255,255,.12),rgba(16,28,19,.25));box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 12px 32px rgba(0,0,0,.16)}
+.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(235,244,221,.12)}.chart-head h2{margin:0;line-height:1.4}.chart-head .material-symbols-outlined{color:var(--mut);font-size:20px}.chart-tile .ch{min-width:0;width:100%;height:clamp(240px,35vh,370px)}.chart-tile .ch.tall{height:clamp(270px,43vh,440px)}
+@media(max-width:859px){.app,.app.collapsed{grid-template-columns:minmax(0,1fr)}.side{gap:5px;align-items:center;padding:6px}.side-head{min-height:0;flex:none}.side-head .brand{display:none}#side-toggle{width:36px;height:36px;flex-basis:36px}nav{min-width:0;flex:1}.collapsed nav a{min-width:40px;flex:1}.collapsed .nav-label{display:none}.collapsed .side{padding:6px}.stage{padding-bottom:105px}.collapsed #v-overview .overview-detail{display:none}}
+@media(prefers-reduced-motion:reduce){.app,.nav-label,.present-label{transition:none!important}.overview-detail{animation:none!important}}
 </style></head><body>
 <div class="app">
-<aside class="side glass"><div class="brand">Retail Energy<br>&amp; Carbon Monitor<small>Live store metering</small></div><nav id="nav" aria-label="Sections"></nav><div class="sp"></div><button class="pill" id="present">▶ Present mode</button></aside>
+<aside class="side glass"><div class="side-head"><div class="brand">Retail Energy<br>&amp; Carbon Monitor<small>Live store metering</small></div><button id="side-toggle" type="button" aria-controls="nav" aria-expanded="true" aria-label="Collapse sidebar" title="Collapse sidebar"><span class="material-symbols-outlined" aria-hidden="true">left_panel_close</span></button></div><nav id="nav" aria-label="Sections"></nav><div class="sp"></div><button class="pill" id="present" aria-label="Present mode" title="Present mode"><span class="material-symbols-outlined" aria-hidden="true">play_arrow</span><span class="present-label">Present mode</span></button></aside>
 <main><div id="prog"></div>
 <div class="top"><h1 id="ttl">Overview<small id="sub"></small></h1><span id="demo" class="pill" style="display:none">Demo data</span><span id="st" class="pill off"><span class="dot"></span><span id="sttx">connecting…</span></span></div>
 <div class="stage" id="stage">
 
 <section class="view" id="v-overview">
- <div class="glass hero c8"><div class="l">Live load across the store</div><div><span class="num big" id="pw">0</span><span class="unit">W</span></div><div class="s" id="pwsub">Waiting for the first reading</div><svg class="flow" id="flow" viewBox="0 0 720 230" role="img" aria-label="Power flow from grid to circuits"></svg></div>
+ <div class="glass hero c8"><div class="l">Live load across the store</div><div class="power-reading"><span class="num big" id="pw">0</span><span class="unit">W</span></div><div class="s" id="pwsub">Waiting for the first reading</div><svg class="flow" id="flow" viewBox="0 0 720 230" role="img" aria-label="Power flow from grid to circuits"></svg></div>
  <div class="kp c4"><div class="glass"><div class="l">Energy today</div><div class="num" id="tk">–</div><div class="s">kWh</div></div><div class="glass"><div class="l">Carbon today</div><div class="num" id="tc">–</div><div class="s">kg CO₂e</div></div><div class="glass"><div class="l">Cost today</div><div class="num" id="tm">–</div><div class="s" id="tar"></div></div><div class="glass"><div class="l">Reduction</div><div class="num" id="ovr">–</div><div class="s">vs baseline</div></div></div>
+ <div class="glass c12 overview-detail"><h2>Electrical snapshot</h2><div class="st4"><div><div class="l">Average voltage</div><div class="num" id="ov-voltage">–</div><div class="s">V</div></div><div><div class="l">Total current</div><div class="num" id="ov-current">–</div><div class="s">A</div></div><div><div class="l">Power factor</div><div class="num" id="ov-pf">–</div></div></div></div>
 </section>
 
 <section class="view" id="v-live">
- <div class="glass c8"><h2>Live power by circuit · last 2 hours (W)</h2><div class="ch tall"><canvas id="c1"></canvas></div></div>
+ <div class="glass c8 chart-tile"><div class="chart-head"><h2>Live power by circuit · last 2 hours (W)</h2><span class="material-symbols-outlined" aria-hidden="true">show_chart</span></div><div class="ch tall"><canvas id="c1"></canvas></div></div>
  <div class="glass c4"><h2>Electrical</h2><div id="elec"></div></div>
  <div class="glass c12"><h2>Circuit load right now</h2><div class="gs" id="gauges"></div></div>
 </section>
 
 <section class="view" id="v-energy">
  <div class="glass c12"><div class="st4" id="est"></div></div>
- <div class="glass c6"><h2>Daily energy by circuit (kWh)</h2><div class="ch tall"><canvas id="c2"></canvas></div></div>
- <div class="glass c6"><h2>Average load by hour · 7 days (W)</h2><div class="ch tall"><canvas id="c3"></canvas></div></div>
+ <div class="glass c6 chart-tile"><div class="chart-head"><h2>Daily energy by circuit (kWh)</h2><span class="material-symbols-outlined" aria-hidden="true">bar_chart</span></div><div class="ch tall"><canvas id="c2"></canvas></div></div>
+ <div class="glass c6 chart-tile"><div class="chart-head"><h2>Average load by hour · 7 days (W)</h2><span class="material-symbols-outlined" aria-hidden="true">bar_chart</span></div><div class="ch tall"><canvas id="c3"></canvas></div></div>
 </section>
 
 <section class="view" id="v-carbon">
  <div class="glass c4"><div class="l">Carbon emitted today</div><div><span class="num" style="font-size:clamp(54px,8vw,84px)" id="cc">–</span><span class="unit">kg</span></div><div class="s" id="cfac"></div>
   <div class="eq"><div><span class="num" id="trees">–</span><span class="s">trees needed for a year to absorb this</span></div><div><span class="num" id="km">–</span><span class="s">km of car travel equivalent</span></div></div>
   <div class="eq"><div><span class="num" id="cm">–</span><span class="s">kg in the last 30 days</span></div><div><span class="num" id="cb">–</span><span class="s">kg avoided per day</span></div></div></div>
- <div class="glass c8"><h2>Daily carbon footprint (kg CO₂e)</h2><div class="ch tall"><canvas id="c4"></canvas></div></div>
+ <div class="glass c8 chart-tile"><div class="chart-head"><h2>Daily carbon footprint (kg CO₂e)</h2><span class="material-symbols-outlined" aria-hidden="true">show_chart</span></div><div class="ch tall"><canvas id="c4"></canvas></div></div>
 </section>
 
 <section class="view" id="v-savings">
@@ -117,7 +158,8 @@ const V=[['overview','Overview','M4 13h6V4H4zM14 20h6v-9h-6zM4 20h6v-3H4zM14 8h6
 ['savings','Savings','M3 17l6-6 4 4 8-8M15 7h6v6','mountain',6.8,'#ffd479'],
 ['battery','Battery','M3 7h17v10H3zM20 10h2v4h-2M7 12h5M9.5 9.5v5','mountain',null,'#8bf0b8'],
 ['settings','Settings','M4 6h16M4 12h16M4 18h16M9 4v4M15 10v4M8 16v4','mountain',22.5,'#5eead4']];
-$('#nav').innerHTML=V.map(v=>`<a href="#${v[0]}" data-v="${v[0]}"><svg viewBox="0 0 24 24"><path d="${v[2]}"/></svg>${v[1]}</a>`).join('');
+const navIcons={overview:'dashboard',live:'bolt',energy:'bar_chart',carbon:'eco',savings:'trending_up',battery:'battery_charging_full',settings:'settings'};
+$('#nav').innerHTML=V.map(v=>`<a href="#${v[0]}" data-v="${v[0]}" aria-label="${v[1]}" title="${v[1]}"><span class="material-symbols-outlined" aria-hidden="true">${navIcons[v[0]]}</span><span class="nav-label">${v[1]}</span></a>`).join('');
 let cur=-1;
 function go(i,first){if(i===cur)return;const old=cur>=0?$('#v-'+V[cur][0]):null,nw=$('#v-'+V[i][0]),dir=i>cur?1:-1;
  if(old){old.className='view '+(dir>0?'outL':'outR');setTimeout(()=>old.className='view',300)}
@@ -127,10 +169,16 @@ function go(i,first){if(i===cur)return;const old=cur>=0?$('#v-'+V[cur][0]):null,
  $('#stage').scrollTo(0,0);if(playing)restartProg();setTimeout(()=>Object.values(C).forEach(c=>c.resize()),60)}
 const route=()=>{const i=V.findIndex(v=>'#'+v[0]===location.hash);go(i<0?0:i,cur<0)};addEventListener('hashchange',route);
 let playing=false,pt;const restartProg=()=>{const p=$('#prog');p.classList.remove('run');void p.offsetWidth;p.classList.add('run')};
-$('#present').onclick=()=>{playing=!playing;clearInterval(pt);$('#prog').classList.remove('run');$('#present').textContent=playing?'■ Stop presenting':'▶ Present mode';if(playing){restartProg();pt=setInterval(()=>{location.hash='#'+V[(cur+1)%V.length][0]},12000)}};
+$('#present').onclick=()=>{playing=!playing;clearInterval(pt);$('#prog').classList.remove('run');$('#present .material-symbols-outlined').textContent=playing?'stop':'play_arrow';$('#present .present-label').textContent=playing?'Stop presenting':'Present mode';$('#present').title=$('#present .present-label').textContent;$('#present').setAttribute('aria-label',$('#present').title);if(playing){restartProg();pt=setInterval(()=>{location.hash='#'+V[(cur+1)%V.length][0]},12000)}};
 addEventListener('keydown',e=>{if(e.key==='Escape'&&playing)$('#present').click()});
+/* ---------- collapsible sidebar ---------- */
+const app=$('.app'),toggle=$('#side-toggle');
+function setCollapsed(value){app.classList.toggle('collapsed',value);toggle.setAttribute('aria-expanded',String(!value));toggle.title=value?'Expand sidebar':'Collapse sidebar';toggle.setAttribute('aria-label',toggle.title);toggle.firstElementChild.textContent=value?'left_panel_open':'left_panel_close';try{localStorage.setItem('monitor.sidebar.collapsed',String(value))}catch(e){}}
+let stored=false;try{stored=localStorage.getItem('monitor.sidebar.collapsed')==='true'}catch(e){}setCollapsed(stored);
+toggle.addEventListener('click',()=>setCollapsed(!app.classList.contains('collapsed')));
+app.addEventListener('transitionend',e=>{if(e.target===app&&e.propertyName==='grid-template-columns')Object.values(C).forEach(c=>{if(c.canvas.offsetWidth)c.resize()})});
 /* ---------- charts ---------- */
-const HAS=typeof Chart!=='undefined';if(HAS){Chart.defaults.color='#d3e3d9';Chart.defaults.borderColor='rgba(255,255,255,.1)';Chart.defaults.font.family="'Segoe UI',Arial,sans-serif"}
+const HAS=typeof Chart!=='undefined';if(HAS){Chart.defaults.color='#d3e3d9';Chart.defaults.borderColor='rgba(255,255,255,.1)';Chart.defaults.font.family="'Shanti',Arial,sans-serif"}
 let C={},first=true,flowKey='',gKey='',D=null,tPoll=0,forceDemo=false,usingDemo=false;
 const mkc=(id,cfg)=>{if(!HAS)return;if(C[id]){C[id].data=cfg.data;C[id].update('none')}else{cfg.options={responsive:true,maintainAspectRatio:false,animation:{duration:900},plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true}}},...cfg.options};C[id]=new Chart($('#'+id),cfg)}};
 /* ---------- demo data (used when the API has no data, e.g. Vercel without a database) ---------- */
@@ -176,9 +224,9 @@ async function load(){let d=null;if(!forceDemo){try{const j=await (await fetch('
  /* live */
  const Vv=L.reduce((a,r)=>a+r.v,0)/(L.length||1),I=L.reduce((a,r)=>a+r.i,0),PF=tw?L.reduce((a,r)=>a+r.pf*r.p,0)/tw:0,F=L.reduce((a,r)=>a+r.f,0)/(L.length||1);
  if(!$('#ev'))$('#elec').innerHTML=[['ev','Voltage','V'],['ei','Current','A'],['epf','Power factor',''],['ef','Frequency','Hz'],['ew','Total power','W']].map(r=>`<div class="mrow"><span class="l">${r[1]}</span><span><span class="num" id="${r[0]}">–</span><i>${r[2]}</i></span></div>`).join('');
- tween($('#ev'),Vv,1);tween($('#ei'),I,2);tween($('#epf'),PF,2);tween($('#ef'),F,2);tween($('#ew'),tw,0);
+ tween($('#ov-voltage'),Vv,1);tween($('#ov-current'),I,2);tween($('#ov-pf'),PF,2);tween($('#ev'),Vv,1);tween($('#ei'),I,2);tween($('#epf'),PF,2);tween($('#ef'),F,2);tween($('#ew'),tw,0);
  const ks=Object.keys(n),mx=Math.max(...L.map(r=>r.p),1)*1.25,gk=ks.join();
- if(gk!==gKey){$('#gauges').innerHTML=ks.map(k=>`<div class="glass g"><svg viewBox="0 0 120 120"><circle class="t" cx="60" cy="60" r="48"/><circle class="p" id="gp${k}" cx="60" cy="60" r="48" stroke="${COL[k]}" stroke-dasharray="302" stroke-dashoffset="302"/></svg><span class="num" id="gv${k}">0</span><div class="l">${esc(n[k])}</div><div class="s" id="gs${k}"></div></div>`).join('');gKey=gk}
+ if(gk!==gKey){$('#gauges').innerHTML=ks.map(k=>`<div class="glass g"><div class="gauge-dial"><svg viewBox="0 0 120 120"><circle class="t" cx="60" cy="60" r="48"/><circle class="p" id="gp${k}" cx="60" cy="60" r="48" stroke="${COL[k]}" stroke-dasharray="302" stroke-dashoffset="302"/></svg><span class="num" id="gv${k}">0</span></div><div class="l">${esc(n[k])}</div><div class="s" id="gs${k}"></div></div>`).join('');gKey=gk}
  ks.forEach(k=>{const r=L.find(r=>r.ch==k)||{p:0,i:0};$('#gp'+k).style.strokeDashoffset=302*(1-Math.min(r.p/mx,1));tween($('#gv'+k),r.p,0,'',' W');$('#gs'+k).textContent=f(r.i,2)+' A · '+f(tw?r.p/tw*100:0,0)+'% of load'});
  const ts=[...new Set(d.series.map(r=>r.ts))];
  mkc('c1',{type:'line',data:{labels:ts.map(t=>new Date(t*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})),datasets:ks.map(k=>({label:n[k],borderColor:COL[k],backgroundColor:COL[k]+'33',fill:true,pointRadius:0,borderWidth:2,tension:.35,data:ts.map(t=>(d.series.find(r=>r.ts==t&&r.ch==k)||{}).p??null)}))},options:{scales:{x:{ticks:{maxTicksLimit:8}}}}});
