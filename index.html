@@ -1,0 +1,286 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Retail Energy &amp; Carbon Monitor</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&amp;family=Montserrat:wght@500;600;700&amp;family=Shanti&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<style>
+:root{--ink:#f2f7ee;--mut:#b9cdbf;--edge:rgba(255,255,255,.2);--ac:#5eead4;--amber:#f6c453;--sky:#7dd3fc;--bad:#ff8a80;--disp:'Montserrat',Arial,sans-serif;--body:'Shanti',Arial,sans-serif;--metric:'Kanit',Arial,sans-serif}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{color:var(--ink);font:15px/1.5 var(--body);background:radial-gradient(ellipse at 50% -15%,#45533a 0%,transparent 53%),radial-gradient(ellipse at 0% 100%,#596137 0%,transparent 55%),radial-gradient(ellipse at 100% 100%,#536842 0%,transparent 57%),radial-gradient(ellipse at 50% 85%,#263f30 0%,transparent 60%),#18271f;overflow:hidden}
+
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);height:100dvh}
+.side{display:flex;flex-direction:column;gap:6px;padding:18px 14px;margin:14px 0 14px 14px;border-radius:24px;min-height:0}
+.brand{font:600 19px/1.15 var(--disp);letter-spacing:-.02em;padding:6px 10px 16px}.brand small{display:block;font:400 12px var(--body);color:var(--mut);margin-top:4px;letter-spacing:0}
+nav{display:flex;flex-direction:column;gap:4px}
+nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;color:var(--mut);font-weight:500;text-decoration:none;transition:background .2s,color .2s}
+nav a svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav a:hover{background:rgba(255,255,255,.08);color:var(--ink)}nav a.on{background:rgba(255,255,255,.16);color:var(--ink);box-shadow:inset 3px 0 0 var(--ac)}
+.sp{flex:1}
+main{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px clamp(14px,2.5vw,28px) 6px}
+h1{font:600 clamp(22px,3vw,32px)/1.1 var(--disp);margin:0;flex:1;letter-spacing:-.02em;min-width:180px}h1 small{display:block;font:400 13px var(--body);color:var(--mut);margin-top:4px;letter-spacing:0}
+#prog{position:absolute;left:0;top:0;height:3px;background:var(--ac);width:0;z-index:5}#prog.run{animation:pg 12s linear forwards}@keyframes pg{to{width:100%}}
+.stage{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:10px clamp(14px,2.5vw,28px) 28px;position:relative}
+.view{display:none;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;align-content:start}.view.on{display:grid}
+.view.inR{animation:inR .55s cubic-bezier(.2,.8,.2,1)}.view.inL{animation:inL .55s cubic-bezier(.2,.8,.2,1)}.view.outL{display:grid;animation:outL .3s ease-in forwards;position:absolute;left:clamp(14px,2.5vw,28px);right:clamp(14px,2.5vw,28px);top:10px}.view.outR{display:grid;animation:outR .3s ease-in forwards;position:absolute;left:clamp(14px,2.5vw,28px);right:clamp(14px,2.5vw,28px);top:10px}
+@keyframes inR{from{opacity:0;transform:translateX(70px)}}@keyframes inL{from{opacity:0;transform:translateX(-70px)}}@keyframes outL{to{opacity:0;transform:translateX(-70px)}}@keyframes outR{to{opacity:0;transform:translateX(70px)}}
+.glass{background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border:1px solid var(--edge);border-radius:22px;padding:20px;min-width:0;backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 18px 50px rgba(0,0,0,.28)}
+.c12{grid-column:span 12}.c8{grid-column:span 12}.c6{grid-column:span 12}.c4{grid-column:span 12}.c3{grid-column:span 6}
+@media(min-width:1100px){.c8{grid-column:span 8}.c6{grid-column:span 6}.c4{grid-column:span 4}.c3{grid-column:span 3}}
+@media(min-width:700px) and (max-width:1099px){.c6{grid-column:span 6}.c4{grid-column:span 6}}
+.l{color:var(--mut);font-size:13px;font-weight:500}.s{color:var(--mut);font-size:12.5px}h2{font:600 16px var(--disp);margin:0 0 12px}
+.num{font-family:var(--disp);font-weight:600;letter-spacing:-.015em;font-variant-numeric:tabular-nums;line-height:1}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;font-size:13px;font-weight:700;background:rgba(255,255,255,.09);border:1px solid var(--edge);color:var(--ink);text-decoration:none;cursor:pointer;font-family:var(--body)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--ac);animation:pulse 1.8s infinite}.off .dot{background:var(--bad);animation:none}@keyframes pulse{70%{box-shadow:0 0 0 10px #5eead400}0%{box-shadow:0 0 0 0 var(--ac)}}
+.hero{min-height:420px;display:flex;flex-direction:column}.hero .big{font-size:clamp(64px,12vw,128px);line-height:.95}.unit{font:600 24px var(--disp);color:var(--mut);margin-left:8px}
+.flow{width:100%;height:auto;margin-top:auto}.flow .base{stroke:rgba(255,255,255,.14);fill:none;stroke-width:2}.flow .run{fill:none;stroke-linecap:round;stroke-dasharray:2 14;animation:dash 1.2s linear infinite}@keyframes dash{to{stroke-dashoffset:-16}}
+.flow text{fill:var(--ink);font:600 12px var(--body)}.flow .w{fill:var(--mut);font-weight:400}
+.kp{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:start}.kp .glass .num{font-size:clamp(26px,3vw,38px);margin:8px 0 4px}
+.mrow{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.1)}.mrow:last-child{border:0}.mrow .num{font-size:26px}.mrow i{font:500 13px var(--body);color:var(--mut);margin-left:4px;font-style:normal}
+.ch{position:relative;height:clamp(220px,32vh,340px)}.ch.tall{height:clamp(260px,42vh,420px)}
+.gs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}.g{text-align:center}.g svg{width:120px;height:120px;transform:rotate(-90deg)}.g circle{fill:none;stroke-width:10;stroke-linecap:round}.g .t{stroke:rgba(255,255,255,.12)}.g .p{transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1)}.g .num{font-size:24px;margin-top:-76px;display:block;height:76px;padding-top:26px}
+.ring{position:relative;width:170px;height:170px;margin:0 auto}.ring svg{transform:rotate(-90deg)}.ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}.ring circle{fill:none;stroke-width:12;stroke-linecap:round}.ring .t{stroke:rgba(255,255,255,.12)}.ring .p{stroke:var(--ac);transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 8px var(--ac))}
+.track{height:8px;border-radius:9px;background:rgba(255,255,255,.12);overflow:hidden;margin:4px 0 8px}.track span{display:block;height:100%;border-radius:9px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}.bar b{display:flex;justify-content:space-between;font-weight:500;font-size:13px}
+.eq{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.eq div{background:rgba(255,255,255,.07);border-radius:14px;padding:12px}.eq .num{font-size:26px;display:block;margin-bottom:4px}
+.st4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}.st4 .num{font-size:28px;margin-top:8px}
+input,button{font:inherit;border-radius:12px;padding:9px 12px;border:1px solid var(--edge);background:rgba(255,255,255,.1);color:var(--ink);min-width:0}input::placeholder{color:#b9cdbf99}
+button{cursor:pointer;font-weight:700;background:var(--ac);color:#06281f;border:0}button.g2{background:rgba(255,255,255,.12);color:var(--ink);border:1px solid var(--edge)}
+label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--mut);font-weight:500}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}.iv{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media(max-width:859px){.app{grid-template-columns:1fr}.side{position:fixed;z-index:20;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));margin:0;padding:6px;flex-direction:row;border-radius:20px}.brand,.sp,.side .pill{display:none}
+ nav{flex-direction:row;width:100%;justify-content:space-between}nav a{flex-direction:column;gap:2px;padding:7px 4px;font-size:10.5px;flex:1;align-items:center;text-align:center;border-radius:12px}nav a.on{box-shadow:none}
+ .stage{padding-bottom:100px}.hero{min-height:360px}.flow text{font-size:17px}.top{padding-top:calc(14px + env(safe-area-inset-top))}}
+@media(max-width:480px){nav{overflow-x:auto}nav a{min-width:49px;flex-shrink:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* Typography, alignment and responsive metric spacing */
+.num{font-family:var(--metric);font-weight:500;letter-spacing:0;line-height:1.15;font-variant-numeric:tabular-nums lining-nums}
+.brand,h1,h2{letter-spacing:-.015em}h1,.brand{font-weight:700}h2{font-weight:600}
+.l,.s,nav a{font-weight:400}.pill,button{font-weight:400}
+:root{--mut:#d1deca;--edge:rgba(235,244,221,.23)}
+.material-symbols-outlined{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:22px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased;flex:none}
+.hero{container-type:inline-size}.power-reading{display:flex;align-items:baseline;gap:12px;margin:14px 0 12px;min-width:0;flex-wrap:wrap}.hero .big{font-size:clamp(42px,15cqi,112px);line-height:1.18;max-width:100%;overflow-wrap:anywhere}.power-reading .unit{margin-left:0;flex:none}#pwsub{line-height:1.5}
+.gauge-dial{display:grid;place-items:center;width:120px;height:120px;margin:0 auto 12px;position:relative}.gauge-dial svg,.gauge-dial .num{grid-area:1/1}.gauge-dial svg{display:block}.gauge-dial .num{margin:0;padding:0;height:auto;font-size:21px;line-height:1.1;z-index:1;max-width:90px;overflow-wrap:anywhere}.g .l{margin-top:4px}.g .s{margin-top:2px}
+@media(max-width:859px){nav{overflow-x:auto;justify-content:flex-start}nav a{min-width:58px}.material-symbols-outlined{font-size:21px}}
+
+/* Responsive navigation and content-driven bento layout */
+.app{--rail:248px;grid-template-columns:var(--rail) minmax(0,1fr);transition:grid-template-columns 320ms cubic-bezier(.2,.75,.25,1)}
+.app.collapsed{--rail:88px}
+.side{padding:12px;overflow:hidden;min-width:0;gap:10px}
+.side-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:58px}
+.side-head .brand{padding:0 0 0 5px;font-size:16px;white-space:nowrap;overflow:hidden;min-width:0;flex:1}
+#side-toggle{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;padding:0;border:1px solid var(--edge);background:rgba(255,255,255,.07);color:var(--ink)}
+#side-toggle:hover{background:rgba(255,255,255,.16)}
+nav a{min-width:0;white-space:nowrap;overflow:hidden;gap:12px;min-height:44px}
+.nav-label,.present-label{white-space:nowrap;overflow:hidden;transition:opacity 140ms ease}
+.collapsed .brand,.collapsed .nav-label,.collapsed .present-label{opacity:0;width:0;flex:0;padding:0;pointer-events:none}
+.collapsed .side-head{justify-content:center}.collapsed nav a{justify-content:center;padding:11px 0;gap:0}.collapsed #present{justify-content:center;padding:9px 0;gap:0}
+#present{min-height:42px;overflow:hidden;white-space:nowrap}.side .sp{min-height:4px}
+.stage{container-type:inline-size}.view{gap:16px}.view>.glass,.kp>.glass{min-width:0}
+/* Breakpoints follow the available content width, not the browser width. */
+@media(min-width:860px){.view>.c8,.view>.c6,.view>.c4{grid-column:span 12}.view>.c3{grid-column:span 6}}
+@container (min-width:640px){.view>.c6,.view>.c4{grid-column:span 6}.view>.c3{grid-column:span 3}}
+@container (min-width:940px){.view>.c8{grid-column:span 8}.view>.c4{grid-column:span 4}}
+#v-overview .hero{min-height:360px}.kp{align-content:stretch;grid-auto-rows:minmax(130px,1fr);min-width:0}.kp>.glass{display:flex;flex-direction:column;justify-content:center;container-type:inline-size}.kp .num{font-size:clamp(27px,18cqi,44px);overflow-wrap:anywhere}.kp .s{margin-top:4px}
+@container (min-width:1140px){#v-overview .hero{grid-column:span 7;min-height:420px}#v-overview .kp{grid-column:span 5}}
+.overview-detail{display:none}.overview-detail .st4{grid-template-columns:repeat(3,minmax(0,1fr))}.overview-detail .num{overflow-wrap:anywhere}
+.collapsed #v-overview .overview-detail{display:block;animation:detail-in 240ms ease both}
+@keyframes detail-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.chart-tile{display:flex;flex-direction:column;gap:12px;background:linear-gradient(155deg,rgba(255,255,255,.12),rgba(16,28,19,.25));box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 12px 32px rgba(0,0,0,.16)}
+.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(235,244,221,.12)}.chart-head h2{margin:0;line-height:1.4}.chart-head .material-symbols-outlined{color:var(--mut);font-size:20px}.chart-tile .ch{min-width:0;width:100%;height:clamp(240px,35vh,370px)}.chart-tile .ch.tall{height:clamp(270px,43vh,440px)}
+@media(max-width:859px){.app,.app.collapsed{grid-template-columns:minmax(0,1fr)}.side{gap:5px;align-items:center;padding:6px}.side-head{min-height:0;flex:none}.side-head .brand{display:none}#side-toggle{width:36px;height:36px;flex-basis:36px}nav{min-width:0;flex:1}.collapsed nav a{min-width:40px;flex:1}.collapsed .nav-label{display:none}.collapsed .side{padding:6px}.stage{padding-bottom:105px}.collapsed #v-overview .overview-detail{display:none}}
+@media(prefers-reduced-motion:reduce){.app,.nav-label,.present-label{transition:none!important}.overview-detail{animation:none!important}}
+
+/* Reactive power flow: load-driven, illustrative appliance motion */
+.flow{display:block;overflow:visible;margin-top:auto;padding-top:16px}.flow text{font:400 13px var(--body)}
+.flow .rf-pulse{stroke-dasharray:3 19;stroke-linecap:round;animation:rf-travel 2s linear infinite}
+.flow .rf-art,.flow .rf-glow,.flow .rf-rays,.flow [id^="rf-line-"],.flow #rf-grid{transition:opacity .5s ease}
+.flow .rf-wind{animation:rf-air 1.5s linear infinite}.flow .rf-fan{transform-origin:0 0;animation:rf-spin 2s linear infinite}
+@keyframes rf-travel{to{stroke-dashoffset:-44}}@keyframes rf-air{0%{transform:translateX(-4px);opacity:.35}50%{opacity:1}100%{transform:translateX(8px);opacity:.15}}@keyframes rf-spin{to{transform:rotate(360deg)}}
+@media(max-width:859px){.flow text{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.flow *{animation:none!important;transition:none!important}}
+</style></head><body>
+<div class="app">
+<aside class="side glass"><div class="side-head"><div class="brand">Retail Energy<br>&amp; Carbon Monitor<small>Live store metering</small></div><button id="side-toggle" type="button" aria-controls="nav" aria-expanded="true" aria-label="Collapse sidebar" title="Collapse sidebar"><span class="material-symbols-outlined" aria-hidden="true">left_panel_close</span></button></div><nav id="nav" aria-label="Sections"></nav><div class="sp"></div><button class="pill" id="present" aria-label="Present mode" title="Present mode"><span class="material-symbols-outlined" aria-hidden="true">play_arrow</span><span class="present-label">Present mode</span></button></aside>
+<main><div id="prog"></div>
+<div class="top"><h1 id="ttl">Overview<small id="sub"></small></h1><span id="demo" class="pill" style="display:none">Demo data</span><span id="st" class="pill off"><span class="dot"></span><span id="sttx">connecting…</span></span></div>
+<div class="stage" id="stage">
+
+<section class="view" id="v-overview">
+ <div class="glass hero c8"><div class="l">Live load across the store</div><div class="power-reading"><span class="num big" id="pw">0</span><span class="unit">W</span></div><div class="s" id="pwsub">Waiting for the first reading</div><svg class="flow" id="flow" viewBox="0 0 720 230" role="img" aria-label="Power flow from grid to circuits"></svg></div>
+ <div class="kp c4"><div class="glass"><div class="l">Energy today</div><div class="num" id="tk">–</div><div class="s">kWh</div></div><div class="glass"><div class="l">Carbon today</div><div class="num" id="tc">–</div><div class="s">kg CO₂e</div></div><div class="glass"><div class="l">Cost today</div><div class="num" id="tm">–</div><div class="s" id="tar"></div></div><div class="glass"><div class="l">Reduction</div><div class="num" id="ovr">–</div><div class="s">vs baseline</div></div></div>
+ <div class="glass c12 overview-detail"><h2>Electrical snapshot</h2><div class="st4"><div><div class="l">Average voltage</div><div class="num" id="ov-voltage">–</div><div class="s">V</div></div><div><div class="l">Total current</div><div class="num" id="ov-current">–</div><div class="s">A</div></div><div><div class="l">Power factor</div><div class="num" id="ov-pf">–</div></div></div></div>
+</section>
+
+<section class="view" id="v-live">
+ <div class="glass c8 chart-tile"><div class="chart-head"><h2>Live power by circuit · last 2 hours (W)</h2><span class="material-symbols-outlined" aria-hidden="true">show_chart</span></div><div class="ch tall"><canvas id="c1"></canvas></div></div>
+ <div class="glass c4"><h2>Electrical</h2><div id="elec"></div></div>
+ <div class="glass c12"><h2>Circuit load right now</h2><div class="gs" id="gauges"></div></div>
+</section>
+
+<section class="view" id="v-energy">
+ <div class="glass c12"><div class="st4" id="est"></div></div>
+ <div class="glass c6 chart-tile"><div class="chart-head"><h2>Daily energy by circuit (kWh)</h2><span class="material-symbols-outlined" aria-hidden="true">bar_chart</span></div><div class="ch tall"><canvas id="c2"></canvas></div></div>
+ <div class="glass c6 chart-tile"><div class="chart-head"><h2>Average load by hour · 7 days (W)</h2><span class="material-symbols-outlined" aria-hidden="true">bar_chart</span></div><div class="ch tall"><canvas id="c3"></canvas></div></div>
+</section>
+
+<section class="view" id="v-carbon">
+ <div class="glass c4"><div class="l">Carbon emitted today</div><div><span class="num" style="font-size:clamp(54px,8vw,84px)" id="cc">–</span><span class="unit">kg</span></div><div class="s" id="cfac"></div>
+  <div class="eq"><div><span class="num" id="trees">–</span><span class="s">trees needed for a year to absorb this</span></div><div><span class="num" id="km">–</span><span class="s">km of car travel equivalent</span></div></div>
+  <div class="eq"><div><span class="num" id="cm">–</span><span class="s">kg in the last 30 days</span></div><div><span class="num" id="cb">–</span><span class="s">kg avoided per day</span></div></div></div>
+ <div class="glass c8 chart-tile"><div class="chart-head"><h2>Daily carbon footprint (kg CO₂e)</h2><span class="material-symbols-outlined" aria-hidden="true">show_chart</span></div><div class="ch tall"><canvas id="c4"></canvas></div></div>
+</section>
+
+<section class="view" id="v-savings">
+ <div class="glass c4"><h2>Reduction vs baseline</h2><div class="ring"><svg width="170" height="170" viewBox="0 0 170 170"><circle class="t" cx="85" cy="85" r="73"/><circle class="p" id="rp" cx="85" cy="85" r="73" stroke-dasharray="459" stroke-dashoffset="459"/></svg><div class="c"><span class="num" style="font-size:38px" id="rpv">–</span><span class="s">saved</span></div></div><div class="s" style="text-align:center;margin-top:12px" id="rsub">Log a measure to start the comparison</div></div>
+ <div class="glass c8"><h2>Baseline vs current</h2><div id="cmp" class="s">Log an energy-saving measure in Settings. Once you have complete days before and after it, the comparison appears here.</div><div id="cbars" style="margin-top:16px"></div></div>
+</section>
+
+<section class="view" id="v-battery">
+ <div class="glass c12"><h2>24 V DC battery</h2><div class="s" id="battery-source">Waiting for battery readings</div></div>
+ <div class="glass c3"><div class="l">Voltage</div><div class="num" style="font-size:clamp(26px,3vw,38px);margin:8px 0 4px" id="bv">–</div><div class="s">V</div></div>
+ <div class="glass c3"><div class="l">Current</div><div class="num" style="font-size:clamp(26px,3vw,38px);margin:8px 0 4px" id="bi">–</div><div class="s">A</div></div>
+ <div class="glass c3"><div class="l">Power</div><div class="num" style="font-size:clamp(26px,3vw,38px);margin:8px 0 4px" id="bp">–</div><div class="s">W</div></div>
+ <div class="glass c3"><div class="l">Energy</div><div class="num" style="font-size:clamp(26px,3vw,38px);margin:8px 0 4px" id="be">–</div><div class="s">Wh</div></div>
+ <div class="glass c3"><div class="l">Runtime</div><div class="num" style="font-size:clamp(26px,3vw,38px);margin:8px 0 4px" id="br">–</div><div class="s">hh:mm:ss</div></div>
+ <div class="glass c3"><div class="l">State of charge (SoC)</div><div class="num" style="font-size:clamp(26px,3vw,38px);margin:8px 0 4px" id="bsoc">–</div><div class="s">%</div></div>
+ <div class="glass c3"><div class="l">State of health (SoH)</div><div class="num" style="font-size:clamp(26px,3vw,38px);margin:8px 0 4px" id="bsoh">–</div><div class="s">%</div></div>
+ <div class="glass c3"><div class="l">Battery status</div><div class="num" style="font-size:clamp(20px,2.2vw,30px);margin:8px 0 4px" id="bstatus">–</div><div class="s">Charging / discharging</div></div>
+</section>
+
+<section class="view" id="v-settings">
+ <div class="glass c6"><h2>Energy-saving measures</h2><div id="ivs"></div><div class="row" style="margin-top:14px"><label>Measure<input id="in" placeholder="e.g. Switched to LED lighting"></label><label>Note<input id="nt" placeholder="optional"></label><button id="add">Log measure now</button></div></div>
+ <div class="glass c6"><h2>Settings</h2><div class="row"><label>Tariff (₹/kWh)<input id="tf" type="number" step="0.01" style="width:110px"></label><label>Grid factor (kgCO₂e/kWh)<input id="fc" type="number" step="0.001" style="width:150px"></label><button class="g2" id="sv">Save</button></div>
+  <p class="s">Default factor is illustrative. Replace it with the latest CEA grid factor. Results are indicative, not certified measurement.</p>
+  <div class="row" style="margin-top:8px"><label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="fd"> Force demo data</label><a class="pill" href="/api/daily.csv">Export CSV</a></div></div>
+</section>
+</div></main></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),f=(n,d=1)=>(+n).toLocaleString('en-IN',{maximumFractionDigits:d,minimumFractionDigits:0}),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),
+COL=['','#f6c453','#5eead4','#7dd3fc','#f9a8d4','#c4b5fd'],RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function tween(el,to,dec=0,pre='',suf=''){if(!el)return;const from=+el.dataset.v||0;el.dataset.v=to;if(RM||from===to){el.textContent=pre+f(to,dec)+suf;return}const t0=performance.now();(function st(t){const k=Math.min(1,(t-t0)/900),e=1-Math.pow(1-k,3);el.textContent=pre+f(from+(to-from)*e,dec)+suf;if(k<1)requestAnimationFrame(st)})(t0)}
+/* ---------- views ---------- */
+const V=[['overview','Overview','M4 13h6V4H4zM14 20h6v-9h-6zM4 20h6v-3H4zM14 8h6V4h-6z','mountain',null,'#5eead4'],
+['live','Live Power','M13 2L4 14h7l-1 8 9-12h-7z','aurora',null,'#8bf0b8'],
+['energy','Energy','M5 20V10M12 20V4M19 20v-7','ocean',null,'#7dd3fc'],
+['carbon','Carbon','M5 19c0-9 5-14 14-14 0 9-5 14-14 14zM5 19l7-7','forest',null,'#b6f36a'],
+['savings','Savings','M3 17l6-6 4 4 8-8M15 7h6v6','mountain',6.8,'#ffd479'],
+['battery','Battery','M3 7h17v10H3zM20 10h2v4h-2M7 12h5M9.5 9.5v5','mountain',null,'#8bf0b8'],
+['settings','Settings','M4 6h16M4 12h16M4 18h16M9 4v4M15 10v4M8 16v4','mountain',22.5,'#5eead4']];
+const navIcons={overview:'dashboard',live:'bolt',energy:'bar_chart',carbon:'eco',savings:'trending_up',battery:'battery_charging_full',settings:'settings'};
+$('#nav').innerHTML=V.map(v=>`<a href="#${v[0]}" data-v="${v[0]}" aria-label="${v[1]}" title="${v[1]}"><span class="material-symbols-outlined" aria-hidden="true">${navIcons[v[0]]}</span><span class="nav-label">${v[1]}</span></a>`).join('');
+let cur=-1;
+function go(i,first){if(i===cur)return;const old=cur>=0?$('#v-'+V[cur][0]):null,nw=$('#v-'+V[i][0]),dir=i>cur?1:-1;
+ if(old){old.className='view '+(dir>0?'outL':'outR');setTimeout(()=>old.className='view',300)}
+ nw.className='view on '+(first?'':(dir>0?'inR':'inL'));cur=i;
+ document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===V[i][0]));
+ $('#ttl').firstChild.textContent=V[i][1];document.documentElement.style.setProperty('--ac',V[i][5]);
+ $('#stage').scrollTo(0,0);if(playing)restartProg();setTimeout(()=>Object.values(C).forEach(c=>c.resize()),60)}
+const route=()=>{const i=V.findIndex(v=>'#'+v[0]===location.hash);go(i<0?0:i,cur<0)};addEventListener('hashchange',route);
+let playing=false,pt;const restartProg=()=>{const p=$('#prog');p.classList.remove('run');void p.offsetWidth;p.classList.add('run')};
+$('#present').onclick=()=>{playing=!playing;clearInterval(pt);$('#prog').classList.remove('run');$('#present .material-symbols-outlined').textContent=playing?'stop':'play_arrow';$('#present .present-label').textContent=playing?'Stop presenting':'Present mode';$('#present').title=$('#present .present-label').textContent;$('#present').setAttribute('aria-label',$('#present').title);if(playing){restartProg();pt=setInterval(()=>{location.hash='#'+V[(cur+1)%V.length][0]},12000)}};
+addEventListener('keydown',e=>{if(e.key==='Escape'&&playing)$('#present').click()});
+/* ---------- collapsible sidebar ---------- */
+const app=$('.app'),toggle=$('#side-toggle');
+function setCollapsed(value){app.classList.toggle('collapsed',value);toggle.setAttribute('aria-expanded',String(!value));toggle.title=value?'Expand sidebar':'Collapse sidebar';toggle.setAttribute('aria-label',toggle.title);toggle.firstElementChild.textContent=value?'left_panel_open':'left_panel_close';try{localStorage.setItem('monitor.sidebar.collapsed',String(value))}catch(e){}}
+let stored=false;try{stored=localStorage.getItem('monitor.sidebar.collapsed')==='true'}catch(e){}setCollapsed(stored);
+toggle.addEventListener('click',()=>setCollapsed(!app.classList.contains('collapsed')));
+app.addEventListener('transitionend',e=>{if(e.target===app&&e.propertyName==='grid-template-columns')Object.values(C).forEach(c=>{if(c.canvas.offsetWidth)c.resize()})});
+/* ---------- charts ---------- */
+const HAS=typeof Chart!=='undefined';if(HAS){Chart.defaults.color='#d3e3d9';Chart.defaults.borderColor='rgba(255,255,255,.1)';Chart.defaults.font.family="'Shanti',Arial,sans-serif"}
+let C={},first=true,flowKey='',gKey='',D=null,tPoll=0,forceDemo=false,usingDemo=false;
+const mkc=(id,cfg)=>{if(!HAS)return;if(C[id]){C[id].data=cfg.data;C[id].update('none')}else{cfg.options={responsive:true,maintainAspectRatio:false,animation:{duration:900},plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true}}},...cfg.options};C[id]=new Chart($('#'+id),cfg)}};
+/* ---------- demo data (used when the API has no data, e.g. Vercel without a database) ---------- */
+function demo(){const now=Math.floor(Date.now()/1000),tz=19800,names={1:'Lighting',2:'Air conditioning',3:'Refrigeration'},B={1:130,2:800,3:250},rnd=(a,b)=>a+Math.random()*(b-a);
+ const shape=(h,k)=>k==3?1:(h>=9&&h<=21?1:.18)*(k==2?(.8+.25*Math.sin((h-9)/12*3.14)):1);
+ const pw=(t,k)=>{const h=((t+tz)%86400)/3600;return B[k]*shape(h,k)*(.92+.08*Math.sin(t/230+k))+rnd(-6,6)};
+ const live=[1,2,3].map(k=>{const p=Math.max(pw(now,k),0);return{ch:k,ts:now,v:230+rnd(-2,2),i:p/(230*.92),p,pf:.92,f:50+rnd(-.05,.05),e:0}});
+ const series=[];for(let t=now-7200;t<=now;t+=60)[1,2,3].forEach(k=>series.push({ts:t,ch:k,p:Math.max(pw(t,k),0)}));
+ const daily=[];for(let d=13;d>=0;d--){const day=Math.floor((now+tz)/86400)-d,after=d<=4,ch={};let tot=0;[1,2,3].forEach(k=>{let v=B[k]*(k==3?24:12.5)/1000*(after&&k<3?(k==1?.45:.75):1)*rnd(.94,1.06);ch[k]=v;tot+=v});
+  daily.push({day:new Date(day*86400e3).toISOString().slice(0,10),d:day,kwh:tot,ch,co2:tot*.71,cost:tot*8,complete:d>0})}
+ const hourly=Array.from({length:24},(_,h)=>({h,w:[1,2,3].reduce((a,k)=>a+B[k]*shape(h,k),0)*rnd(.95,1.05)}));
+ const bs=daily.filter(x=>x.d<daily[9].d+1&&x.complete),cs=daily.filter(x=>x.d>daily[9].d&&x.complete),av=(L,g)=>L.reduce((a,x)=>a+g(x),0)/L.length,bk=av(bs,x=>x.kwh),ck=av(cs,x=>x.kwh);
+ const cmp={base_days:bs.length,cur_days:cs.length,base_kwh:bk,cur_kwh:ck,saved_kwh:bk-ck,pct:(bk-ck)/bk*100,saved_co2:(bk-ck)*.71,saved_cost:(bk-ck)*8,month_cost:(bk-ck)*240,month_co2:(bk-ck)*.71*30,ch:{}};
+ [1,2,3].forEach(k=>cmp.ch[k]={base:av(bs,x=>x.ch[k]),cur:av(cs,x=>x.ch[k])});
+ const h0=((now+tz)%86400)/3600,today={kwh:[1,2,3].reduce((a,k)=>a+B[k]*shape(h0,k)*h0*.5/1000,0)};today.co2=today.kwh*.71;today.cost=today.kwh*8;
+ return{cfg:{tariff:8,factor:.71,tz},names,now,last_seen:now,online:true,live,series,hourly,daily,today,compare:cmp,interventions:[{id:0,ts:now-5*86400,name:'LED lighting + AC schedule (demo)',note:'Sample measure'}]}}
+/* ---------- power-flow diagram ---------- */
+function flow(d){
+ const ks=Object.keys(d.names),key=JSON.stringify(ks.map(k=>[k,d.names[k]])),n=ks.length,H=Math.max(260,n*76+40),mid=H/2,Y=i=>n===1?mid:42+i*(H-84)/(n-1);
+ const watts=k=>d.online?Math.max(0,Number(d.live.find(r=>String(r.ch)===k)?.p)||0):0;
+ const total=ks.reduce((a,k)=>a+watts(k),0),peak=Math.max(1,...ks.map(watts));
+ const type=k=>/light|lamp/i.test(d.names[k])?'lamp':/air condition|\bac\b|hvac/i.test(d.names[k])?'air':/refrig|fan|cool/i.test(d.names[k])?'fan':'generic';
+ if(flowKey!==key){
+  const cv=$('#flow');cv.setAttribute('viewBox',`0 0 720 ${H}`);
+  let h=`<defs><radialGradient id="rf-glow"><stop stop-color="#ffdf80" stop-opacity=".65"/><stop offset="1" stop-color="#ffdf80" stop-opacity="0"/></radialGradient></defs>`;
+  const lines=(x1,x2,y1,y2,col,id)=>{const path=o=>`M${x1} ${y1+o}C${x1+(x2-x1)*.48} ${y1+o} ${x2-(x2-x1)*.48} ${y2+o} ${x2} ${y2+o}`;return `<g id="${id}" stroke="${col}" fill="none"><path d="${path(-4)}" opacity=".32"/><path d="${path(4)}" opacity=".32"/><path d="${path(0)}" opacity=".65"/><path class="rf-pulse" d="${path(0)}" stroke-width="2.5"/></g>`};
+  h+=lines(75,242,mid,mid,'#dce8c9','rf-grid');
+  ks.forEach((k,i)=>{const t=type(k),col=t==='lamp'?'#e9c46a':t==='air'?'#9cd5b4':t==='fan'?'#8bbfd4':COL[k]||'#c7d8bb';h+=lines(242,474,mid,Y(i),col,'rf-line-'+i)});
+  h+=`<g transform="translate(50 ${mid})"><circle r="23" fill="#ffffff0b" stroke="#a4b59a"/><path d="M0 -16l-10 18h10l-4 13 15-21H1l5-10z" fill="#e9c46a"/><text y="42" text-anchor="middle">Grid</text></g><g transform="translate(242 ${mid})"><circle r="13" fill="#3e5239" stroke="#c6d3b8" stroke-width="1.5"/><circle id="rf-hub" r="5" fill="#c6d3b8"/><text y="42" text-anchor="middle">Store mains</text></g>`;
+  ks.forEach((k,i)=>{const t=type(k),col=t==='lamp'?'#e9c46a':t==='air'?'#9cd5b4':t==='fan'?'#8bbfd4':COL[k]||'#c7d8bb';let art='';
+   if(t==='lamp')art=`<circle class="rf-glow" r="35" fill="url(#rf-glow)" stroke="none"/><path class="rf-bulb" d="M-7 5a12 12 0 1 1 14 0l-2 6h-10z" fill="#e9c46a44"/><path d="M-4 15h8m-6 4h4"/><path class="rf-rays" d="M0 -22v-6M-16 -18l-4-4M16 -18l4-4M-20 -5h-6M20 -5h6"/>`;
+   else if(t==='air')art=`<path class="rf-wind" d="M-19 -11H3q11 0 8-8t-12-1"/><path class="rf-wind" style="animation-delay:-.5s" d="M-26 0h39q12 0 8 9t-13 0"/><path class="rf-wind" style="animation-delay:-1s" d="M-17 11h13q8 0 6 6t-8 0"/>`;
+   else if(t==='fan')art=`<circle r="22" opacity=".6"/><g class="rf-fan" fill="${col}" stroke="none">${[0,120,240].map(a=>`<path d="M0 -2C-17 -7 -16 -23 -6 -20Q4 -17 0 -2Z" transform="rotate(${a})"/>`).join('')}<circle r="4"/></g>`;
+   else art=`<circle r="12"/><circle r="4" fill="${col}"/>`;
+   h+=`<g id="rf-device-${i}" transform="translate(508 ${Y(i)})" tabindex="0" role="img" aria-label="${esc(d.names[k])}"><title>${esc(d.names[k])}</title><g class="rf-art" stroke="${col}" stroke-width="2" stroke-linecap="round" fill="none">${art}</g><text x="36" y="4">${esc(d.names[k])}</text></g>`;
+  });cv.innerHTML=h;flowKey=key;
+ }
+ const pulse=(g,w,level)=>{const p=g.querySelector('.rf-pulse');g.style.opacity=w?(.55+.45*level):.2;p.style.opacity=w?1:0;p.style.animationPlayState=w?'running':'paused';p.style.animationDuration=(3.4-2.8*level)+'s'};
+ pulse($('#rf-grid'),total,total?1:0);$('#rf-hub').style.opacity=total?1:.25;
+ ks.forEach((k,i)=>{const w=watts(k),v=w/peak,g=$('#rf-device-'+i),art=g.querySelector('.rf-art');pulse($('#rf-line-'+i),w,v);art.style.opacity=w?.4+.6*v:.25;g.querySelector('title').textContent=d.online?`${d.names[k]}: ${f(w,1)} W`:`${d.names[k]}: meter offline`;g.setAttribute('aria-label',g.querySelector('title').textContent);
+  const glow=g.querySelector('.rf-glow');if(glow){glow.style.opacity=w?.25+.75*v:0;glow.setAttribute('r',20+17*v);g.querySelector('.rf-bulb').setAttribute('fill',`rgba(255,218,110,${v*.8})`);g.querySelector('.rf-rays').style.opacity=v;}
+  g.querySelectorAll('.rf-wind,.rf-fan').forEach(e=>{e.style.animationDuration=(4-3.4*v)+'s';e.style.animationPlayState=w?'running':'paused'});
+ });
+}
+/* ---------- battery tab ---------- */
+const batteryDemoStart=Date.now();
+function renderBattery(d){
+ const elapsed=Math.max(0,(Date.now()-batteryDemoStart)/1000),hours=elapsed/3600;
+ const b=usingDemo?{voltage:24.6,current:3.2,power:78.72,energy_wh:78.72*(2+hours),runtime_s:7200+elapsed,soc:Math.max(0,78-hours*16),soh:94,status:'Discharging'}:d.battery;
+ $('#battery-source').textContent=usingDemo?'Simulated battery readings · illustrative 20 Ah battery':b?'Battery readings supplied by the meter':'Battery not connected · waiting for DC telemetry';
+ const value=(id,n,dec=1)=>{$('#'+id).textContent=typeof n==='number'&&Number.isFinite(n)?f(n,dec):'–'};
+ value('bv',b?.voltage,2);value('bi',b?.current,2);value('bp',b?.power,2);value('be',b?.energy_wh,2);value('bsoc',b?.soc,1);value('bsoh',b?.soh,1);
+ const r=b?.runtime_s;$('#br').textContent=typeof r==='number'&&Number.isFinite(r)&&r>=0?[Math.floor(r/3600),Math.floor(r/60)%60,Math.floor(r)%60].map(n=>String(n).padStart(2,'0')).join(':'):'–';
+ $('#bstatus').textContent=typeof b?.status==='string'?b.status:'–';
+}
+/* ---------- main load ---------- */
+async function load(){let d=null;if(!forceDemo){try{const j=await (await fetch('/api/summary')).json();if(j&&j.live&&j.live.length)d=j}catch(e){}}
+ usingDemo=!d;if(usingDemo)d=demo();$('#demo').style.display=usingDemo?'inline-flex':'none';D=d;tPoll=Date.now();renderBattery(d);
+ const n=d.names,tw=d.live.reduce((a,r)=>a+r.p,0),td=d.today,c=d.compare,L=d.live;
+ $('#sttx').textContent=d.online?'Meter online · '+new Date(d.last_seen*1000).toLocaleTimeString():'Meter offline';$('#st').className='pill'+(d.online?'':' off');
+ $('#sub').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+ /* overview */
+ tween($('#pw'),tw,0);$('#pwsub').textContent=`${L.length} circuit${L.length>1?'s':''} reporting · updated ${new Date(d.last_seen*1000).toLocaleTimeString()}`;flow(d);
+ if(td){tween($('#tk'),td.kwh,2);tween($('#tc'),td.co2,2);tween($('#tm'),td.cost,0,'₹')}$('#tar').textContent='tariff ₹'+d.cfg.tariff+'/kWh';tween($('#ovr'),c?c.pct:0,1,'','%');
+ /* live */
+ const Vv=L.reduce((a,r)=>a+r.v,0)/(L.length||1),I=L.reduce((a,r)=>a+r.i,0),PF=tw?L.reduce((a,r)=>a+r.pf*r.p,0)/tw:0,F=L.reduce((a,r)=>a+r.f,0)/(L.length||1);
+ if(!$('#ev'))$('#elec').innerHTML=[['ev','Voltage','V'],['ei','Current','A'],['epf','Power factor',''],['ef','Frequency','Hz'],['ew','Total power','W']].map(r=>`<div class="mrow"><span class="l">${r[1]}</span><span><span class="num" id="${r[0]}">–</span><i>${r[2]}</i></span></div>`).join('');
+ tween($('#ov-voltage'),Vv,1);tween($('#ov-current'),I,2);tween($('#ov-pf'),PF,2);tween($('#ev'),Vv,1);tween($('#ei'),I,2);tween($('#epf'),PF,2);tween($('#ef'),F,2);tween($('#ew'),tw,0);
+ const ks=Object.keys(n),mx=Math.max(...L.map(r=>r.p),1)*1.25,gk=ks.join();
+ if(gk!==gKey){$('#gauges').innerHTML=ks.map(k=>`<div class="glass g"><div class="gauge-dial"><svg viewBox="0 0 120 120"><circle class="t" cx="60" cy="60" r="48"/><circle class="p" id="gp${k}" cx="60" cy="60" r="48" stroke="${COL[k]}" stroke-dasharray="302" stroke-dashoffset="302"/></svg><span class="num" id="gv${k}">0</span></div><div class="l">${esc(n[k])}</div><div class="s" id="gs${k}"></div></div>`).join('');gKey=gk}
+ ks.forEach(k=>{const r=L.find(r=>r.ch==k)||{p:0,i:0};$('#gp'+k).style.strokeDashoffset=302*(1-Math.min(r.p/mx,1));tween($('#gv'+k),r.p,0,'',' W');$('#gs'+k).textContent=f(r.i,2)+' A · '+f(tw?r.p/tw*100:0,0)+'% of load'});
+ const ts=[...new Set(d.series.map(r=>r.ts))];
+ mkc('c1',{type:'line',data:{labels:ts.map(t=>new Date(t*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})),datasets:ks.map(k=>({label:n[k],borderColor:COL[k],backgroundColor:COL[k]+'33',fill:true,pointRadius:0,borderWidth:2,tension:.35,data:ts.map(t=>(d.series.find(r=>r.ts==t&&r.ch==k)||{}).p??null)}))},options:{scales:{x:{ticks:{maxTicksLimit:8}}}}});
+ /* energy */
+ const hw=d.hourly.map(h=>h.w),pk=d.hourly.reduce((a,h)=>h.w>a.w?h:a,d.hourly[0]||{h:0,w:0}),bl=Math.min(...hw),av=hw.reduce((a,b)=>a+b,0)/(hw.length||1),full=d.daily.filter(x=>x.complete).slice(-7),dk=full.length?full.reduce((a,x)=>a+x.kwh,0)/full.length:0;
+ const st=(l,v,s)=>`<div><div class="l">${l}</div><div class="num">${v}</div><div class="s">${s}</div></div>`;
+ $('#est').innerHTML=st('Peak hour',(pk.h??0)+':00',f(pk.w||0,0)+' W average')+st('Base load',f(bl,0)+' W','lowest hourly average')+st('Load factor',f(pk.w?av/pk.w*100:0,0)+'%','average ÷ peak')+st('Daily average',f(dk,1)+' kWh','last 7 complete days')+st('Projected month',f(dk*30,0)+' kWh','₹'+f(dk*30*d.cfg.tariff,0));
+ mkc('c2',{type:'bar',data:{labels:d.daily.map(x=>x.day.slice(5)),datasets:ks.map(k=>({label:n[k],backgroundColor:COL[k],borderRadius:4,data:d.daily.map(x=>x.ch[k]||0)}))},options:{scales:{x:{stacked:true},y:{stacked:true}}}});
+ mkc('c3',{type:'bar',data:{labels:d.hourly.map(h=>h.h+':00'),datasets:[{label:'Avg load (W)',backgroundColor:'#7dd3fccc',borderRadius:5,data:hw}]},options:{plugins:{legend:{display:false}}}});
+ /* carbon */
+ if(td){tween($('#trees'),td.co2/21*365,0);tween($('#km'),td.co2/.12,0)}$('#cfac').textContent='Grid factor '+d.cfg.factor+' kgCO₂e/kWh';tween($('#cm'),d.daily.reduce((a,x)=>a+x.co2,0),0);tween($('#cb'),c?c.saved_co2:0,1);
+ mkc('c4',{type:'line',data:{labels:d.daily.map(x=>x.day.slice(5)),datasets:[{label:'kg CO₂e',borderColor:'#b6f36a',backgroundColor:'#b6f36a33',fill:true,tension:.35,pointRadius:3,borderWidth:2,data:d.daily.map(x=>x.co2)}]},options:{scales:{y:{beginAtZero:true}},plugins:{legend:{display:false}}}});
+ /* savings */
+ if(c){const p=Math.max(0,Math.min(100,c.pct));$('#rp').style.strokeDashoffset=459*(1-p/100);tween($('#rpv'),c.pct,1,'','%');$('#rsub').textContent=`Saving ₹${f(c.month_cost,0)} and ${f(c.month_co2)} kgCO₂e a month (projected)`;
+  $('#cmp').innerHTML=`<div class="st4"><div><div class="l">Baseline (${c.base_days} days)</div><div class="num">${f(c.base_kwh)}</div><div class="s">kWh/day</div></div><div><div class="l">Current (${c.cur_days} days)</div><div class="num">${f(c.cur_kwh)}</div><div class="s">kWh/day</div></div><div><div class="l">Saved per day</div><div class="num">${f(c.saved_kwh,2)}</div><div class="s">${f(c.saved_co2,2)} kgCO₂e · ₹${f(c.saved_cost,0)}</div></div></div>`;
+  const m2=Math.max(...ks.map(k=>c.ch[k].base),1);$('#cbars').innerHTML=ks.map(k=>`<div class="bar"><b><span>${esc(n[k])}</span><span>${f(c.ch[k].base,2)} → ${f(c.ch[k].cur,2)} kWh/day</span></b><div class="track"><span style="width:${c.ch[k].base/m2*100}%;background:rgba(255,255,255,.35)"></span></div><div class="track"><span style="width:${c.ch[k].cur/m2*100}%;background:${COL[k]}"></span></div></div>`).join('')}
+ $('#ivs').innerHTML=d.interventions.map(i=>`<div class="iv"><span><b>${esc(i.name)}</b><br><span class="s">${new Date(i.ts*1000).toLocaleString()} ${esc(i.note||'')}</span></span>${usingDemo?'':`<button class="g2" onclick="del(${+i.id})">Remove</button>`}</div>`).join('')||'<div class="s">No measures logged yet.</div>';
+ if(first){$('#tf').value=d.cfg.tariff;$('#fc').value=d.cfg.factor;first=false}}
+/* live counters tick between polls */
+setInterval(()=>{if(!D||!D.today||!D.online)return;const tw=D.live.reduce((a,r)=>a+r.p,0),k=D.today.kwh+tw/1000*(Date.now()-tPoll)/3.6e6,set=(id,v,dec,pre='')=>{const e=$(id);e.dataset.v=v;e.textContent=pre+f(v,dec)};set('#tk',k,3);set('#tc',k*D.cfg.factor,3);set('#cc',k*D.cfg.factor,3);set('#tm',k*D.cfg.tariff,2,'₹')},1000);
+const post=(u,b)=>fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+$('#add').onclick=async()=>{if(!$('#in').value.trim())return;await post('/api/intervention',{name:$('#in').value,note:$('#nt').value});$('#in').value=$('#nt').value='';load()};
+$('#sv').onclick=async()=>{await post('/api/settings',{tariff:+$('#tf').value,factor:+$('#fc').value});load()};
+$('#fd').onchange=e=>{forceDemo=e.target.checked;load()};window.del=async id=>{await fetch('/api/intervention/'+id,{method:'DELETE'});load()};
+route();load();setInterval(load,5000);
+</script></body></html>
