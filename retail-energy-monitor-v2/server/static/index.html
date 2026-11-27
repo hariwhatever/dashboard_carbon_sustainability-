@@ -89,6 +89,15 @@ nav a{min-width:0;white-space:nowrap;overflow:hidden;gap:12px;min-height:44px}
 .chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(235,244,221,.12)}.chart-head h2{margin:0;line-height:1.4}.chart-head .material-symbols-outlined{color:var(--mut);font-size:20px}.chart-tile .ch{min-width:0;width:100%;height:clamp(240px,35vh,370px)}.chart-tile .ch.tall{height:clamp(270px,43vh,440px)}
 @media(max-width:859px){.app,.app.collapsed{grid-template-columns:minmax(0,1fr)}.side{gap:5px;align-items:center;padding:6px}.side-head{min-height:0;flex:none}.side-head .brand{display:none}#side-toggle{width:36px;height:36px;flex-basis:36px}nav{min-width:0;flex:1}.collapsed nav a{min-width:40px;flex:1}.collapsed .nav-label{display:none}.collapsed .side{padding:6px}.stage{padding-bottom:105px}.collapsed #v-overview .overview-detail{display:none}}
 @media(prefers-reduced-motion:reduce){.app,.nav-label,.present-label{transition:none!important}.overview-detail{animation:none!important}}
+
+/* Reactive power flow: load-driven, illustrative appliance motion */
+.flow{display:block;overflow:visible;margin-top:auto;padding-top:16px}.flow text{font:400 13px var(--body)}
+.flow .rf-pulse{stroke-dasharray:3 19;stroke-linecap:round;animation:rf-travel 2s linear infinite}
+.flow .rf-art,.flow .rf-glow,.flow .rf-rays,.flow [id^="rf-line-"],.flow #rf-grid{transition:opacity .5s ease}
+.flow .rf-wind{animation:rf-air 1.5s linear infinite}.flow .rf-fan{transform-origin:0 0;animation:rf-spin 2s linear infinite}
+@keyframes rf-travel{to{stroke-dashoffset:-44}}@keyframes rf-air{0%{transform:translateX(-4px);opacity:.35}50%{opacity:1}100%{transform:translateX(8px);opacity:.15}}@keyframes rf-spin{to{transform:rotate(360deg)}}
+@media(max-width:859px){.flow text{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.flow *{animation:none!important;transition:none!important}}
 </style></head><body>
 <div class="app">
 <aside class="side glass"><div class="side-head"><div class="brand">Retail Energy<br>&amp; Carbon Monitor<small>Live store metering</small></div><button id="side-toggle" type="button" aria-controls="nav" aria-expanded="true" aria-label="Collapse sidebar" title="Collapse sidebar"><span class="material-symbols-outlined" aria-hidden="true">left_panel_close</span></button></div><nav id="nav" aria-label="Sections"></nav><div class="sp"></div><button class="pill" id="present" aria-label="Present mode" title="Present mode"><span class="material-symbols-outlined" aria-hidden="true">play_arrow</span><span class="present-label">Present mode</span></button></aside>
@@ -196,11 +205,33 @@ function demo(){const now=Math.floor(Date.now()/1000),tz=19800,names={1:'Lightin
  const h0=((now+tz)%86400)/3600,today={kwh:[1,2,3].reduce((a,k)=>a+B[k]*shape(h0,k)*h0*.5/1000,0)};today.co2=today.kwh*.71;today.cost=today.kwh*8;
  return{cfg:{tariff:8,factor:.71,tz},names,now,last_seen:now,online:true,live,series,hourly,daily,today,compare:cmp,interventions:[{id:0,ts:now-5*86400,name:'LED lighting + AC schedule (demo)',note:'Sample measure'}]}}
 /* ---------- power-flow diagram ---------- */
-function flow(d){const ks=Object.keys(d.names),key=ks.join(),n=ks.length,tw=d.live.reduce((a,r)=>a+r.p,0)||1,Y=i=>n==1?115:40+i*(150/(n-1)),sp=w=>Math.max(.35,Math.min(3.5,2.6-Math.log10(Math.max(w,1))*.55));
- if(flowKey!==key){let h=`<path class="base" d="M70 115H290"/>`+ks.map((k,i)=>`<path class="base" d="M290 115C390 115 400 ${Y(i)} 500 ${Y(i)}"/>`).join('')+`<path class="run" id="r0" d="M70 115H290" stroke="#fff"/>`+ks.map((k,i)=>`<path class="run" id="r${k}" d="M290 115C390 115 400 ${Y(i)} 500 ${Y(i)}" stroke="${COL[k]||'#fff'}"/>`).join('');
-  h+=`<g><circle cx="52" cy="115" r="18" fill="rgba(255,255,255,.14)" stroke="#fff3"/><path d="M48 106l-6 12h8l-3 10 12-15h-8l4-7z" fill="#f6c453"/><text x="30" y="150">Grid</text></g><g><rect x="272" y="97" width="36" height="36" rx="10" fill="rgba(255,255,255,.14)" stroke="#fff3"/><text x="262" y="152">Store mains</text></g>`+ks.map((k,i)=>`<g><circle cx="515" cy="${Y(i)}" r="9" fill="${COL[k]||'#fff'}"/><text x="532" y="${Y(i)-2}">${esc(d.names[k])}</text><text class="w" id="fw${k}" x="532" y="${Y(i)+14}">0 W</text></g>`).join('');$('#flow').innerHTML=h;flowKey=key}
- $('#r0').style.animationDuration=sp(tw)+'s';$('#r0').style.strokeWidth=Math.min(6,2+tw/1500);
- ks.forEach(k=>{const r=d.live.find(r=>r.ch==k)||{p:0},e=$('#r'+k);if(e){e.style.animationDuration=sp(r.p)+'s';e.style.strokeWidth=Math.min(6,2+r.p/900)}const w=$('#fw'+k);if(w)w.textContent=f(r.p,0)+' W'})}
+function flow(d){
+ const ks=Object.keys(d.names),key=JSON.stringify(ks.map(k=>[k,d.names[k]])),n=ks.length,H=Math.max(260,n*76+40),mid=H/2,Y=i=>n===1?mid:42+i*(H-84)/(n-1);
+ const watts=k=>d.online?Math.max(0,Number(d.live.find(r=>String(r.ch)===k)?.p)||0):0;
+ const total=ks.reduce((a,k)=>a+watts(k),0),peak=Math.max(1,...ks.map(watts));
+ const type=k=>/light|lamp/i.test(d.names[k])?'lamp':/air condition|\bac\b|hvac/i.test(d.names[k])?'air':/refrig|fan|cool/i.test(d.names[k])?'fan':'generic';
+ if(flowKey!==key){
+  const cv=$('#flow');cv.setAttribute('viewBox',`0 0 720 ${H}`);
+  let h=`<defs><radialGradient id="rf-glow"><stop stop-color="#ffdf80" stop-opacity=".65"/><stop offset="1" stop-color="#ffdf80" stop-opacity="0"/></radialGradient></defs>`;
+  const lines=(x1,x2,y1,y2,col,id)=>{const path=o=>`M${x1} ${y1+o}C${x1+(x2-x1)*.48} ${y1+o} ${x2-(x2-x1)*.48} ${y2+o} ${x2} ${y2+o}`;return `<g id="${id}" stroke="${col}" fill="none"><path d="${path(-4)}" opacity=".32"/><path d="${path(4)}" opacity=".32"/><path d="${path(0)}" opacity=".65"/><path class="rf-pulse" d="${path(0)}" stroke-width="2.5"/></g>`};
+  h+=lines(75,242,mid,mid,'#dce8c9','rf-grid');
+  ks.forEach((k,i)=>{const t=type(k),col=t==='lamp'?'#e9c46a':t==='air'?'#9cd5b4':t==='fan'?'#8bbfd4':COL[k]||'#c7d8bb';h+=lines(242,474,mid,Y(i),col,'rf-line-'+i)});
+  h+=`<g transform="translate(50 ${mid})"><circle r="23" fill="#ffffff0b" stroke="#a4b59a"/><path d="M0 -16l-10 18h10l-4 13 15-21H1l5-10z" fill="#e9c46a"/><text y="42" text-anchor="middle">Grid</text></g><g transform="translate(242 ${mid})"><circle r="13" fill="#3e5239" stroke="#c6d3b8" stroke-width="1.5"/><circle id="rf-hub" r="5" fill="#c6d3b8"/><text y="42" text-anchor="middle">Store mains</text></g>`;
+  ks.forEach((k,i)=>{const t=type(k),col=t==='lamp'?'#e9c46a':t==='air'?'#9cd5b4':t==='fan'?'#8bbfd4':COL[k]||'#c7d8bb';let art='';
+   if(t==='lamp')art=`<circle class="rf-glow" r="35" fill="url(#rf-glow)" stroke="none"/><path class="rf-bulb" d="M-7 5a12 12 0 1 1 14 0l-2 6h-10z" fill="#e9c46a44"/><path d="M-4 15h8m-6 4h4"/><path class="rf-rays" d="M0 -22v-6M-16 -18l-4-4M16 -18l4-4M-20 -5h-6M20 -5h6"/>`;
+   else if(t==='air')art=`<path class="rf-wind" d="M-19 -11H3q11 0 8-8t-12-1"/><path class="rf-wind" style="animation-delay:-.5s" d="M-26 0h39q12 0 8 9t-13 0"/><path class="rf-wind" style="animation-delay:-1s" d="M-17 11h13q8 0 6 6t-8 0"/>`;
+   else if(t==='fan')art=`<circle r="22" opacity=".6"/><g class="rf-fan" fill="${col}" stroke="none">${[0,120,240].map(a=>`<path d="M0 -2C-17 -7 -16 -23 -6 -20Q4 -17 0 -2Z" transform="rotate(${a})"/>`).join('')}<circle r="4"/></g>`;
+   else art=`<circle r="12"/><circle r="4" fill="${col}"/>`;
+   h+=`<g id="rf-device-${i}" transform="translate(508 ${Y(i)})" tabindex="0" role="img" aria-label="${esc(d.names[k])}"><title>${esc(d.names[k])}</title><g class="rf-art" stroke="${col}" stroke-width="2" stroke-linecap="round" fill="none">${art}</g><text x="36" y="4">${esc(d.names[k])}</text></g>`;
+  });cv.innerHTML=h;flowKey=key;
+ }
+ const pulse=(g,w,level)=>{const p=g.querySelector('.rf-pulse');g.style.opacity=w?(.55+.45*level):.2;p.style.opacity=w?1:0;p.style.animationPlayState=w?'running':'paused';p.style.animationDuration=(3.4-2.8*level)+'s'};
+ pulse($('#rf-grid'),total,total?1:0);$('#rf-hub').style.opacity=total?1:.25;
+ ks.forEach((k,i)=>{const w=watts(k),v=w/peak,g=$('#rf-device-'+i),art=g.querySelector('.rf-art');pulse($('#rf-line-'+i),w,v);art.style.opacity=w?.4+.6*v:.25;g.querySelector('title').textContent=d.online?`${d.names[k]}: ${f(w,1)} W`:`${d.names[k]}: meter offline`;g.setAttribute('aria-label',g.querySelector('title').textContent);
+  const glow=g.querySelector('.rf-glow');if(glow){glow.style.opacity=w?.25+.75*v:0;glow.setAttribute('r',20+17*v);g.querySelector('.rf-bulb').setAttribute('fill',`rgba(255,218,110,${v*.8})`);g.querySelector('.rf-rays').style.opacity=v;}
+  g.querySelectorAll('.rf-wind,.rf-fan').forEach(e=>{e.style.animationDuration=(4-3.4*v)+'s';e.style.animationPlayState=w?'running':'paused'});
+ });
+}
 /* ---------- battery tab ---------- */
 const batteryDemoStart=Date.now();
 function renderBattery(d){
